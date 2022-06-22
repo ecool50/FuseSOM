@@ -1,0 +1,66 @@
+---
+title: "Introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# load in the required libraries
+```{r setup}
+library(FuseSOM)
+```
+
+Load in sample data and the markers of interest
+```{r}
+risom <- risom_dat
+risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD',
+                   'Tryptase','MPO','CD20','CD3','CD8','CD4','CD14','CD68','FAP',
+                   'CD36','CD11c','HLADRDPDQ','P63','CD44')
+```
+
+The first step of the FuseSOM pipeline is to normalize the data
+Here we will use the percentile normalization method to normalize the 
+marker intensity values
+```{r}
+risom_normalized <- NormalizeData(risom_dat, risom_markers, method = 'percentile')
+```
+
+Now that we have the normalized data, we can generate the SOM model
+To do this, we call the `GeneratePrototypes()` function which takes in the 
+normalized data. Note that you can also pass in the raw data subsetted to 
+the markers of interest.
+
+```{r}
+# generate the som model
+som_model <- GeneratePrototypes(risom_normalized)
+
+# visualize the grid using the hitmap function from the yasomi package
+yasomi::hitMap(som_model,col="blue",with.grid=FALSE,asp=1)
+
+```
+
+Next we can cluster the prototypes using the `ClusterPrototypes()` function.
+This function takes in the SOM model and the desired number of clusters.
+It then performs hierarchical clustering using the average linkage function on a 
+distance matrix derived by fusing together the Pearson, Cosine, and Spearman
+distances between the prototypes and returns the cluster labels.
+
+```{r}
+# Cluster the prototypes using 6 clusters as derived from the original publication
+labels <- ClusterPrototypes(som_model, numClusters = 6)
+
+# We can now visualize the clustering using a heatmap
+p.heat <- generateHeatmap(risom, risom_markers, as.numeric(labels))
+```
+
+
+
