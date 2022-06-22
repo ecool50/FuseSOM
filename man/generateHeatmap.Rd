@@ -3,8 +3,7 @@
 \name{generateHeatmap}
 \alias{generateHeatmap}
 \title{Generate Heatmap of Clusters
-A self organizing map of the marker intensities is generated using the Yasomi package
-The grid size is determined automatically}
+A heatmap of marker intensities given cluster labels is generated}
 \usage{
 generateHeatmap(data, markers, labels)
 }
@@ -20,6 +19,5 @@ the cluster label
 }
 \description{
 Generate Heatmap of Clusters
-A self organizing map of the marker intensities is generated using the Yasomi package
-The grid size is determined automatically
+A heatmap of marker intensities given cluster labels is generated
 }

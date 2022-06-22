@@ -3,8 +3,9 @@
 \name{ClusterPrototypes}
 \alias{ClusterPrototypes}
 \title{Generate Self Organizing Maps
-A self organizing map of the marker intensities is generated using the Yasomi package
-The grid size is determined automatically}
+The prototypes generated from the self organizing map is clustered using
+hierarchical clustering based on the multiview integration of the Pearson,
+Cosine and Spearman distances between the protoypes}
 \usage{
 ClusterPrototypes(som_model, numClusters = NULL)
 }
@@ -18,6 +19,7 @@ the cluster labels
 }
 \description{
 Generate Self Organizing Maps
-A self organizing map of the marker intensities is generated using the Yasomi package
-The grid size is determined automatically
+The prototypes generated from the self organizing map is clustered using
+hierarchical clustering based on the multiview integration of the Pearson,
+Cosine and Spearman distances between the protoypes
 }

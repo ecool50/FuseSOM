@@ -128,8 +128,9 @@ GeneratePrototypes <- function(data){
 
 
 #' Generate Self Organizing Maps
-#' A self organizing map of the marker intensities is generated using the Yasomi package
-#' The grid size is determined automatically
+#' The prototypes generated from the self organizing map is clustered using 
+#' hierarchical clustering based on the multiview integration of the Pearson,
+#' Cosine and Spearman distances between the protoypes
 #' 
 #' @param som_model the self organizing map
 #' @param numClusters the number of clusters to generate
@@ -163,8 +164,7 @@ ClusterPrototypes <- function(som_model, numClusters = NULL){
 
 
 #' Generate Heatmap of Clusters
-#' A self organizing map of the marker intensities is generated using the Yasomi package
-#' The grid size is determined automatically
+#' A heatmap of marker intensities given cluster labels is generated
 #' 
 #' @param data the marker intensities
 #' @param markers the markers of interest
