@@ -59,7 +59,7 @@ normalizeData <- function(data, markers, method='none'){
   }else if(method == 'percentile'){
     return(.percentileNorm(data))
   }else if(method == 'minmax'){
-    return(.minmaxNorm(data))
+    return(.minaxNorm(data))
   }else if(method == 'arsinh'){
     return(.arsinhNnorm(data))
   }
@@ -74,7 +74,9 @@ normalizeData <- function(data, markers, method='none'){
 #' 
 #' @param data the marker intensities
 #' @return the self organizing map object.
-#' 
+#' @importFrom yasomi somgrid 
+#' @importFrom yasomi sominit.pca
+#' @importFrom yasomi batchsom
 #' @export
 generatePrototypes <- function(data){
   
@@ -90,14 +92,14 @@ generatePrototypes <- function(data){
   }
   
   # genearte the som grid based on the computed grid size
-  sg <- yasomi::somgrid(xdim=npcs,ydim=npcs,topo="hex")
+  sg <- somgrid(xdim=npcs,ydim=npcs,topo="hex")
   
   # generate the initial prototypes using the first two pcs
-  init.res <- yasomi::sominit.pca(as.matrix(data), somgrid = sg)
+  init.res <- sominit.pca(as.matrix(data), somgrid = sg)
   message('Now Running the Self Organizing Map Model')
   
   # generate the self organizing map
-  som_model <- yasomi::batchsom(as.matrix(data), sg,
+  som_model <- batchsom(as.matrix(data), sg,
                                 prototypes = init.res$prototypes,
                                 verbose = T
   )
@@ -114,6 +116,10 @@ generatePrototypes <- function(data){
 #' @param numClusters the number of clusters to generate
 #' @return the cluster labels
 #' 
+#' @importFrom coop tcosine
+#' @importFrom analogue fuse
+#' @importFrom psych cor2dist
+#' @importFrom FCPS HierarchicalClustering
 #' @export
 clusterPrototypes <- function(som_model, numClusters=NULL){
   if(is.null(numClusters)){
@@ -124,15 +130,15 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
   message('Now Clustering the Prototypes')
   
   # compute the similarity matrices
-  pear <- stats::cor(t(prototypes), method = 'pearson')
-  cosi <- coop::tcosine(prototypes)
-  spear <- stats::cor(t(prototypes), method = 'spearman')
+  pear <- cor(t(prototypes), method = 'pearson')
+  cosi <- tcosine(prototypes)
+  spear <- cor(t(prototypes), method = 'spearman')
     
   # peform multiview integration
   fianl_dist <- as.matrix(fuse(cor2dist(pear),cor2dist(cosi),cor2dist(spear)))
     
   # cluster the final 
-  clusters <- FCPS::HierarchicalClustering(fianl_dist, ClusterNo = numClusters,
+  clusters <- HierarchicalClustering(fianl_dist, ClusterNo = numClusters,
                                       Type = 'AverageL')$Cls
   message('Now Mapping Clusters to the Original Data')
   
@@ -158,10 +164,10 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
 #' @return A Slist containing the SOM model and a ingleCellExperiment object with 
 #' labels in coldata if a SingleCellExperiment object is provided
 #' 
-#' 
-#' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
+#'
+#' @importFrom SingleCellExperiment colData
 #' @export
 #' 
 runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
@@ -249,6 +255,10 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
 #' @import SingleCellExperiment
+#' @importFrom coop tcosine
+#' @importFrom analogue fuse
+#' @importFrom psych cor2dist
+#' @importFrom FCPS HierarchicalClustering
 #' @export
 #' 
 estimateNumcluster <- function(som_model, 
@@ -262,7 +272,7 @@ estimateNumcluster <- function(som_model,
   k_discr <- NULL
   if('Discriminant' %in% method){
     
-    message('Now Computing the Number ff Clusters using Discriminant Analysis')
+    message('Now Computing the Number of Clusters using Discriminant Analysis')
     # the minimum number of clusters
     nmin <- 20
     
