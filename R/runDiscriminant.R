@@ -2,25 +2,25 @@
 # function to estimate the number of clusters using discriminant analysis
 # parts of this function is based on the sigclust2 package by Patrick Kimes
 # see https://github.com/pkimes/sigclust2
-.runDiscrimant <- function(dist_mat, minClusterSize, seed = 1994, alpha = 0.001){
+.runDiscriminant <- function(dist_mat, minClusterSize, seed = 1994, alpha = 0.001){
   
   # do some house keeping
   set.seed(seed)
-  n <- nrow(x)
-  p <- ncol(x)
+  n <- nrow(dist_mat)
+  p <- ncol(dist_mat)
   nd_type <- rep("", n-1)
   p_emp <- rep(0, n-1)
   
   numClusters <- 0
   
   # generate the initial tree
-  init_tree <- fastcluster::hclust(dist(x, method = 'maximum'), method = "average")
+  init_tree <- fastcluster::hclust(dist(dist_mat, method = 'maximum'), method = "average")
   
   # process the resulting dendrogram
   hc_dat <- init_tree
   idx_hc <- .idxHc(init_tree, n)
   cutoff <- .fwerCutoffmatrix(idx_hc, alpha)
-  pd_map <- .pdMap(output, n)
+  pd_map <- .pdMap(init_tree, n)
   nd_type <- rep("", n-1)
   
   # run significance testing on each node
@@ -44,12 +44,12 @@
     
     # Generate initial assingments
     t <- c(idx_vals[[1]], idx_vals[[2]])
-    x_comb <- x[t,t]
+    x_comb <- dist_mat[t,t]
     assignments <- kmeans(x_comb, 2)$cluster
     
     # compute the discriminant projections
-    x_new <- discrcoord(x=x_comb, clvecd = assignments)$proj[, 1]
-    res.pval <- dip.test(x_new)$p.value
+    x_new <- fpc::discrcoord(x=x_comb, clvecd = assignments)$proj[, 1]
+    res.pval <- diptest::dip.test(x_new)$p.value
     
     # update results
     if(alpha < 1){

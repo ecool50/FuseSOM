@@ -2,7 +2,7 @@
 # see https://arxiv.org/abs/1608.07494
 # function was obtained from https://github.com/cran/cstab with some minor modifications
 
-cDistance <- function(data, # n x p data matrix
+.cDistance <- function(data, # n x p data matrix
                       kseq, #sequence of ks to be checked
                       linkage = 'average',
                       gapIter = 10) # number of simulated datasets in gap statistic
@@ -28,7 +28,7 @@ cDistance <- function(data, # n x p data matrix
   
   WCD <- Sil <- MSE <- numeric()
   for(k in kseq) {
-    obj = getMeasures(data = data, k = k)
+    obj = .getMeasures(data = data, k = k)
     WCD[k] = obj$WCD
     Sil[k] = obj$Sil
     MSE[k] = obj$MSE
@@ -39,11 +39,11 @@ cDistance <- function(data, # n x p data matrix
   
   WCD_runs = matrix(NA,nrow=gapIter, ncol=length(kseq))
   for(i in 1:gapIter) {
-    data_syn = uniformData(data)
+    data_syn = .uniformData(data)
     WCDs = numeric()
     for(j in 1:length(kseq)) {
       k = kseq[j]
-      obj = getMeasures(data = data_syn, k = k, measures = c('wcd'))
+      obj = .getMeasures(data = data_syn, k = k, measures = c('wcd'))
       WCDs[j] = obj$WCD
     }
     WCD_runs[i,] = WCDs

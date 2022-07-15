@@ -5,7 +5,7 @@
 \title{A wrapper function to run the FuseSOM algorithm.
 This function accepts a matrix, dataframe or a SingleCellExperiment object}
 \usage{
-runFuseSOM(data, assay = NULL, markers = NULL, numClusters)
+runFuseSOM(data, assay = NULL, markers = NULL, numClusters = NULL)
 }
 \arguments{
 \item{data}{a matrix, dataframe or SingleCellExperiment object. For matrices

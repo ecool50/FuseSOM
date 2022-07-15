@@ -23,7 +23,6 @@ computeGridsize <- function(dataset) {
   muTW <- (sqrt(n - 1) + sqrt(p))^2
   sigmaTW <- (sqrt(n - 1) + sqrt(p)) * (1/sqrt(n - 1) + 1/sqrt(p))^(1/3)
   sigmaHatNaive <- t(x)%*%x  # x left-multiplied by its transpose
-  print(dim(sigmaHatNaive))
   bd <- 3.273 * sigmaTW + muTW  # 3.2730 is the p=0.001 percentile point for the Tracy-Widom distribution
   
   # compute eigenvalues and return the amount which falls above the bound
@@ -48,7 +47,7 @@ computeGridsize <- function(dataset) {
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
 #' @export
-normalizeData <- function(data, markers, method = 'none'){
+normalizeData <- function(data, markers, method='none'){
   if(!(method %in% c('none', 'percentile', 'zscore', 'arsinh', 'minmax'))){
     stop('Please provide a valid normalization method')
   }
@@ -76,11 +75,10 @@ normalizeData <- function(data, markers, method = 'none'){
 #' @param data the marker intensities
 #' @return the self organizing map object.
 #' 
-#' @import yasomi
 #' @export
 generatePrototypes <- function(data){
   
-  message('Now generating Self Organizing Map Grid')
+  message('Now Generating the Self Organizing Map Grid')
   npcs <- computeGridsize(data)
   message(paste('Optimal Grid Size is: ', npcs))
   
@@ -96,7 +94,7 @@ generatePrototypes <- function(data){
   
   # generate the initial prototypes using the first two pcs
   init.res <- yasomi::sominit.pca(as.matrix(data), somgrid = sg)
-  message('Now Running the SOM model')
+  message('Now Running the Self Organizing Map Model')
   
   # generate the self organizing map
   som_model <- yasomi::batchsom(as.matrix(data), sg,
@@ -116,15 +114,14 @@ generatePrototypes <- function(data){
 #' @param numClusters the number of clusters to generate
 #' @return the cluster labels
 #' 
-#' @import coop analogue psych FCPS
 #' @export
-clusterPrototypes <- function(som_model, numClusters = NULL){
+clusterPrototypes <- function(som_model, numClusters=NULL){
   if(is.null(numClusters)){
     stop('Please provide the number of clusters')
   }
   # get the prototypes
   prototypes <- som_model$prototypes
-  message('Now Clustering The Prototypes')
+  message('Now Clustering the Prototypes')
   
   # compute the similarity matrices
   pear <- stats::cor(t(prototypes), method = 'pearson')
@@ -137,11 +134,11 @@ clusterPrototypes <- function(som_model, numClusters = NULL){
   # cluster the final 
   clusters <- FCPS::HierarchicalClustering(fianl_dist, ClusterNo = numClusters,
                                       Type = 'AverageL')$Cls
-  message('Now Mapping Clusters To The Original Data')
+  message('Now Mapping Clusters to the Original Data')
   
   cluster_assignment <- clusters[som_model$classif]
   
-  message('The Prototypes Have Been Clustered And Mapped Successfully')
+  message('The Prototypes have been Clustered and Mapped Successfully')
   return(cluster_assignment)
 }
 
@@ -165,10 +162,15 @@ clusterPrototypes <- function(som_model, numClusters = NULL){
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
-#' @import SingleCellExperiment
 #' @export
 #' 
-runFuseSOM <- function(data, assay = NULL, markers = NULL, numClusters){
+runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
+  
+  if(is.null(numClusters)){
+    stop("Please provide the number of clusters")
+  }
+  
+  flag = FALSE
   
   # if we have a dataframe or a matrix
   if(class(data) %in% c('data.frame', 'matrix')){
@@ -179,6 +181,7 @@ runFuseSOM <- function(data, assay = NULL, markers = NULL, numClusters){
       if(num_numeric != ncol(data)){
         stop("If markers of interest are not provided, make sure the data contains all numeric columns")
       }
+      data_new <- data
     }else{
       # extract the markers of interest
       data_new <- data[, markers]
@@ -197,10 +200,10 @@ runFuseSOM <- function(data, assay = NULL, markers = NULL, numClusters){
     
     # again if no markers are given, make sure all the columns are numeric
     if(is.null(markers)){
-      num_numeric  <- sum(apply(data, 2, function(x) is.numeric(x)))
+      num_numeric  <- sum(apply(data_new, 2, function(x) is.numeric(x)))
       if(num_numeric != ncol(data_new)){
         stop("If markers of interest are not provided, make sure the data contains all numeric columns")
-      }
+      } 
     }else{
       # extract the markers of interest
       data_new <- data_new[, markers]
@@ -211,7 +214,7 @@ runFuseSOM <- function(data, assay = NULL, markers = NULL, numClusters){
   
   # now we can run the FuseSOM algorithm
   message("Everything looks good. Now running the FuseSOM algorithm")
-  data <- apply(data_new, 2, function(x) as.numeric(x))
+  data_new <- apply(data_new, 2, function(x) as.numeric(x))
   som_model <- generatePrototypes(data_new)
   clusters <- clusterPrototypes(som_model, numClusters = numClusters)
   
@@ -259,7 +262,7 @@ estimateNumcluster <- function(som_model,
   k_discr <- NULL
   if('Discriminant' %in% method){
     
-    message('Now Computing The Number Of Clusters Using Discriminant Analysis')
+    message('Now Computing the Number ff Clusters using Discriminant Analysis')
     # the minimum number of clusters
     nmin <- 20
     
