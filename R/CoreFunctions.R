@@ -297,11 +297,11 @@ estimateNumcluster <- function(som_model,
     k_dist <- .cDistance(prototypes, kseq = kseq)
     
     # compute the optimal k values using the elbow method
-    k_dist$k_Gap <- .computeElbow(k_dist$Gaps[1:max(kseq)])
-    k_dist$k_Slope <- .computeElbow(k_dist$Slopes[1:max(kseq)])
-    k_dist$k_Jump <- .computeElbow(k_dist$Jumps[1:max(kseq)])
-    k_dist$k_WCD <- .computeElbow(k_dist$WCD[1:max(kseq)])
-    k_dist$k_Sil <- .computeElbow(k_dist$Silhouettes[1:max(kseq)])
+    k_dist$k_Gap <- .computeElbow(k_dist$Gaps[kseq])
+    k_dist$k_Slope <- .computeElbow(k_dist$Slopes[kseq])
+    k_dist$k_Jump <- .computeElbow(k_dist$Jumps[kseq])
+    k_dist$k_WCD <- .computeElbow(k_dist$WCD[kseq])
+    k_dist$k_Sil <- .computeElbow(k_dist$Silhouettes[kseq])
   }
   
   # compute the number of clusters using the instability metric
