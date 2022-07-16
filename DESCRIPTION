@@ -18,7 +18,13 @@ Imports:
         pheatmap,
         tidyverse,
         ggplotify,
-        SingleCellExperiment
+        SingleCellExperiment,
+        fastcluster,
+        fpc,
+        ggplot2,
+        stringr,
+        ggpubr,
+        SpatialExperiment
 LazyData: true
 Depends: 
     R (>= 2.10)

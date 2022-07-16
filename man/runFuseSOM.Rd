@@ -8,7 +8,8 @@ This function accepts a matrix, dataframe or a SingleCellExperiment object}
 runFuseSOM(data, assay = NULL, markers = NULL, numClusters = NULL)
 }
 \arguments{
-\item{data}{a matrix, dataframe or SingleCellExperiment object. For matrices
+\item{data}{a matrix, dataframe, SingleCellExperiment or SpatialExperiment object.
+For matrices
 and dataframes, it is assumed that markers are the columns and samples rows}
 
 \item{assay}{the assay of interest if SingleCellExperiment object is used}

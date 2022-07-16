@@ -36,18 +36,18 @@ computeGridsize <- function(dataset) {
   return(k+2)
 }
 
-#' Normalize Marker Intensities
-#' The matrix of intensities is normalized based on one of four different method
+#' normalise Marker Intensities
+#' The matrix of intensities is normalised based on one of four different method
 #' These methods include Percentile, zscore, arsinh and minmax
 #' 
 #' @param data the raw intensity scores.
 #' @param markers the markers of interest.
 #' @param  method the normalizaton method
-#' @return normalized matrix.
+#' @return normalised matrix.
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
 #' @export
-normalizeData <- function(data, markers, method='none'){
+normaliseData <- function(data, markers, method='none'){
   if(!(method %in% c('none', 'percentile', 'zscore', 'arsinh', 'minmax'))){
     stop('Please provide a valid normalization method')
   }
@@ -59,7 +59,7 @@ normalizeData <- function(data, markers, method='none'){
   }else if(method == 'percentile'){
     return(.percentileNorm(data))
   }else if(method == 'minmax'){
-    return(.minaxNorm(data))
+    return(.minmaxNorm(data))
   }else if(method == 'arsinh'){
     return(.arsinhNnorm(data))
   }
@@ -78,21 +78,21 @@ normalizeData <- function(data, markers, method='none'){
 #' @importFrom yasomi sominit.pca
 #' @importFrom yasomi batchsom
 #' @export
-generatePrototypes <- function(data){
+generatePrototypes <- function(data, verbose=FALSE){
   
   message('Now Generating the Self Organizing Map Grid')
-  npcs <- computeGridsize(data)
-  message(paste('Optimal Grid Size is: ', npcs))
+  size <- computeGridsize(data)
+  message(paste('Optimal Grid Size is: ', size))
   
   # set a lower bound on the grid size
-  if(npcs < 5){
-    npcs <- 7
+  if(size*size < 25){
+    size <- 5
   } else{
-    npcs <- npcs + 2
+    size <- size + 2
   }
   
   # genearte the som grid based on the computed grid size
-  sg <- somgrid(xdim=npcs,ydim=npcs,topo="hex")
+  sg <- somgrid(xdim=size,ydim=size,topo="hex")
   
   # generate the initial prototypes using the first two pcs
   init.res <- sominit.pca(as.matrix(data), somgrid = sg)
@@ -101,7 +101,7 @@ generatePrototypes <- function(data){
   # generate the self organizing map
   som_model <- batchsom(as.matrix(data), sg,
                                 prototypes = init.res$prototypes,
-                                verbose = T
+                                verbose = verbose
   )
   return(som_model)
 }
@@ -143,6 +143,7 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
   message('Now Mapping Clusters to the Original Data')
   
   cluster_assignment <- clusters[som_model$classif]
+  cluster_assignment <- paste0('cluster_', cluster_assignment)
   
   message('The Prototypes have been Clustered and Mapped Successfully')
   return(cluster_assignment)
@@ -154,7 +155,8 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
 #' 
 #' 
 #' 
-#' @param data a matrix, dataframe or SingleCellExperiment object. For matrices
+#' @param data a matrix, dataframe, SingleCellExperiment or SpatialExperiment object. 
+#' For matrices
 #' and dataframes, it is assumed that markers are the columns and samples rows
 #' @param assay the assay of interest if SingleCellExperiment object is used
 #' @param markers the markers of interest. If this is not provided, all columns will be used
@@ -218,6 +220,30 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
     
   }
   
+  # if we have a spatial experiment object
+  if(class(data) == "SpatialExperiment"){
+    flag = TRUE
+    message("You have provided a dataset of class SpatialExperiment")
+    # make sure an assay is provided
+    if(is.null(assay)){
+      stop("If a SpatialExperiment, make sure the appropriate assay is provided as well")
+    }
+    data_new <- t(assay(data, assay))
+    
+    # again if no markers are given, make sure all the columns are numeric
+    if(is.null(markers)){
+      num_numeric  <- sum(apply(data_new, 2, function(x) is.numeric(x)))
+      if(num_numeric != ncol(data_new)){
+        stop("If markers of interest are not provided, make sure the data contains all numeric columns")
+      } 
+    }else{
+      # extract the markers of interest
+      data_new <- data_new[, markers]
+    }
+    
+    
+  }
+  
   # now we can run the FuseSOM algorithm
   message("Everything looks good. Now running the FuseSOM algorithm")
   data_new <- apply(data_new, 2, function(x) as.numeric(x))
@@ -229,7 +255,8 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
   if(flag){
     coldat <- cbind(colData(data), clusters)
     colData(data) <- coldat
-    return(list(model=som_model, sce=data))
+    metadata(data) <- append(metadata(data), list(SOM=som_model))
+    return(data)
   }else{
     return(list(model=som_model, clusters=clusters))
   }
@@ -240,7 +267,8 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
 
 
 #' A function for estimating the number of clusters using various method
-#' Methods available are: Discriminant, Distance (Gap, Silhouette, Slope, Jump, and Within Cluster Distance,) and Instability
+#' Methods available are: Discriminant, Distance 
+#' (Gap, Silhouette, Slope, Jump, and Within Cluster Distance,) and Instability
 #' 
 #' 
 #' 
@@ -322,3 +350,140 @@ estimateNumcluster <- function(som_model,
 }
 
 
+
+#' A function generating the elbow plot for the optimal number of clusters 
+#' returned by the estimateNumcluster() function
+#' Methods available are: 
+#' Gap, Silhouette, Slope, Jump, and Within Cluster Distance(WCD)
+#' 
+#' @param k_est the estimation list returned by estimateNumcluster()
+#' @param method one of 'jump', 'slope', 'wcd', 'gap', or 'silhouette'
+#' @return an elbow plot object where the optimal number of clusters is marked
+#' 
+#' @author
+#'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
+#' @import ggplot2
+#' @import ggpubr
+#' @import stringr
+#' @export
+#' 
+
+optiPlot <- function(k_est, method='jump'){
+  
+  # make sure a valid method is provided
+  if(!(method %in% c('jump', 'slope', 'wcd', 'gap', 'silhouette'))){
+    stop('Please provide a valid method')
+  }
+  
+  # extract the relevant information for the method provided
+  if(method == 'jump'){
+    method <- stringr::str_to_title(method)
+    jumps <- k_est$Distance$Jumps
+    plot_data <- data.frame(Clusters=1:length(jumps), Jump=jumps)
+    k_opti <- k_est$Distance$k_Jump
+  } else if(method == 'slope'){
+    method <- stringr::str_to_title(method)
+    slopes <- k_est$Distance$Slopes
+    plot_data <- data.frame(Clusters=1:length(slopes), Slope=slopes)
+    k_opti <- k_est$Distance$k_Slope
+  } else if(method == 'wcd'){
+    method <- stringr::str_to_upper(method)
+    wcds <- k_est$Distance$WCD
+    plot_data <- data.frame(Clusters=1:length(wcds), WCD=wcds)
+    k_opti <- k_est$Distance$k_WCD
+  } else if(method == 'gap'){
+    method <- stringr::str_to_title(method)
+    gaps <- k_est$Distance$Gaps
+    plot_data <- data.frame(Clusters=1:length(gaps), Gap=gaps)
+    k_opti <- k_est$Distance$k_Gap
+  } else{
+    method <- stringr::str_to_title(method)
+    silhouettes <- k_est$Distance$Silhouettes
+    plot_data <- data.frame(Clusters=1:length(silhouettes), 
+                           Silhouette=silhouettes)
+    k_opti <- k_est$Distance$k_Sil
+  } 
+  
+  # plot the data
+  p <- ggpubr::ggline(plot_data, x = "Clusters", y = method, group = 1, color = "steelblue") +
+    geom_vline(xintercept = k_opti, linetype = 2, color = 'steelblue') +
+    labs(y = paste(method,"statistic (k)"), x = "Number of clusters k",
+         title = "Optimal number of clusters using the elbow method") +
+    theme(
+      plot.title = element_text(color="Black", size=14, face="bold", hjust = 0.5),
+      axis.title.x = element_text(color="Black", size=14, face="bold"),
+      axis.title.y = element_text(color="Black", size=14, face="bold")
+    )
+  
+  return(p)
+  
+  
+}
+
+
+
+#' A function for generating a heat map of marker expression across clusters 
+#' 
+#' @param data a matrix or dataframe where the rows are samples and columns are
+#' markers
+#' @param markers a list of markers of interest. If not provided, all columns
+#' will be used
+#' @param clusters a vector of cluster labels
+#' @return an elbow plot object where the optimal number of clusters is marked
+#' 
+#' @author
+#'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
+#' @importFrom ggplotify as.ggplot
+#' @importFrom pheatmap pheatmap
+#' @export
+#' 
+markerHeatmap <- function(data, markers=NULL, clusters=NULL){
+  
+  # do some house keeping
+  if(is.null(clusters)){
+    stop("Please provide a vector of cluster labels")
+  }
+  
+  if(!((class(data) == 'matrix') || (class(data) == 'data.frame'))){
+    stop("Make sure you are passing in a dataframe or matrix")
+  }
+  
+  if(is.null(markers)){
+    message("Now markers provided, will be using all columns as markers")
+    markers <- colnames(as.data.frame(data))
+  }
+  # get the data of interest
+  features <- data[, markers]
+  
+  # make all the columns numeric
+  features <- as.data.frame(apply(features, 2, function(x) as.numeric(x)))
+  # do some wrangling to get it in the proper format
+  features_heatmap <- aggregate(.~as.character(clusters),
+                                features,
+                                mean)
+  rownames(features_heatmap) <- features_heatmap[,1]
+  features_heatmap <- features_heatmap[,-1]
+  
+  # compute the marker expression
+  features_heatmap <- sweep(features_heatmap,2, colMeans(features_heatmap), "-")
+  features_heatmap <- sweep(features_heatmap,2, apply(features_heatmap,2,sd), "/")
+  features_heatmap[features_heatmap>2] <- 2
+  features_heatmap[features_heatmap<-2] <- -2
+  
+  # compute the heatmap annotations
+  annotation_row = data.frame(Clusters = rownames(features_heatmap))
+  
+  rn <- rownames(features_heatmap)
+  features_heatmap <- as.matrix(features_heatmap)
+  rownames(features_heatmap) <- rn
+  rownames(annotation_row) <- rownames(features_heatmap)
+  
+  # remove duplicates
+  gaps_row <- which(!duplicated(substr(rownames(features_heatmap),1,2)))[-1]-1
+  
+  # generate the heatmap
+  p.heatmap <- ggplotify::as.ggplot(pheatmap::pheatmap(features_heatmap, gaps_row = gaps_row, 
+                                     annotation_row = annotation_row, annotation_legend = FALSE, 
+                                     cluster_rows = FALSE, cluster_cols = F, fontsize = 14))
+  return(p.heatmap)
+}

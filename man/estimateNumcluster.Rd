@@ -3,7 +3,8 @@
 \name{estimateNumcluster}
 \alias{estimateNumcluster}
 \title{A function for estimating the number of clusters using various method
-Methods available are: Discriminant, Distance (Gap, Silhouette, Slope, Jump, and Within Cluster Distance,) and Instability}
+Methods available are: Discriminant, Distance
+(Gap, Silhouette, Slope, Jump, and Within Cluster Distance,) and Instability}
 \usage{
 estimateNumcluster(
   som_model,
@@ -24,7 +25,8 @@ values over the sequence of k provided
 }
 \description{
 A function for estimating the number of clusters using various method
-Methods available are: Discriminant, Distance (Gap, Silhouette, Slope, Jump, and Within Cluster Distance,) and Instability
+Methods available are: Discriminant, Distance
+(Gap, Silhouette, Slope, Jump, and Within Cluster Distance,) and Instability
 }
 \author{
 Elijah WIllie \href{mailto:ewil3501@uni.sydney.edu.au}{ewil3501@uni.sydney.edu.au}
