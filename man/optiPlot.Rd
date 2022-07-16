@@ -7,12 +7,12 @@ returned by the estimateNumcluster() function
 Methods available are:
 Gap, Silhouette, Slope, Jump, and Within Cluster Distance(WCD)}
 \usage{
-optiPlot(k_est, method = "jump")
+optiPlot(data, method = "jump")
 }
 \arguments{
-\item{k_est}{the estimation list returned by estimateNumcluster()}
-
 \item{method}{one of 'jump', 'slope', 'wcd', 'gap', or 'silhouette'}
+
+\item{k_est}{the estimation list returned by estimateNumcluster()}
 }
 \value{
 an elbow plot object where the optimal number of clusters is marked

@@ -43,11 +43,12 @@ computeGridsize <- function(dataset) {
 #' @param data the raw intensity scores.
 #' @param markers the markers of interest.
 #' @param  method the normalizaton method
+#' @param cofactor the cofactor for arsinh normalisation
 #' @return normalised matrix.
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
 #' @export
-normaliseData <- function(data, markers, method='none'){
+normaliseData <- function(data, markers, method='none', cofactor=5){
   if(!(method %in% c('none', 'percentile', 'zscore', 'arsinh', 'minmax'))){
     stop('Please provide a valid normalization method')
   }
@@ -61,11 +62,42 @@ normaliseData <- function(data, markers, method='none'){
   }else if(method == 'minmax'){
     return(.minmaxNorm(data))
   }else if(method == 'arsinh'){
-    return(.arsinhNnorm(data))
+    return(.arsinhNnorm(data, cofactor))
   }
   return(scale(data))
 }
 
+
+#' normalize Marker Intensities
+#' The matrix of intensities is normalised based on one of four different method
+#' These methods include Percentile, zscore, arsinh and minmax
+#' 
+#' @param data the raw intensity scores.
+#' @param markers the markers of interest.
+#' @param method the normalizaton method
+#' @param cofactor the cofactor for arsinh normalization
+#' @return normalised matrix.
+#' @author
+#'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
+#' @export
+normalizeData <- function(data, markers, method='none', cofactor=5){
+  if(!(method %in% c('none', 'percentile', 'zscore', 'arsinh', 'minmax'))){
+    stop('Please provide a valid normalization method')
+  }
+  
+  data <- as.matrix(data[, markers])
+  
+  if(method == 'none'){
+    return(data)
+  }else if(method == 'percentile'){
+    return(.percentileNorm(data))
+  }else if(method == 'minmax'){
+    return(.minmaxNorm(data))
+  }else if(method == 'arsinh'){
+    return(.arsinhNnorm(data,cofactor))
+  }
+  return(scale(data))
+}
 
 
 #' Generate a Self Organizing Map and return it's prototypes
@@ -156,15 +188,14 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
 #' 
 #' 
 #' @param data a matrix, dataframe, SingleCellExperiment or SpatialExperiment object. 
-#' For matrices
-#' and dataframes, it is assumed that markers are the columns and samples rows
+#' For matrices and dataframes, it is assumed that markers are the columns and samples rows
 #' @param assay the assay of interest if SingleCellExperiment object is used
 #' @param markers the markers of interest. If this is not provided, all columns will be used
 #' @param  numCluster the number of clusters to be generated from the data
-#' @return A list conataining the SOM model and the cluster labels if a dataframe 
+#' @return A list containing the SOM model and the cluster labels if a dataframe 
 #' or matrix is provided
-#' @return A Slist containing the SOM model and a ingleCellExperiment object with 
-#' labels in coldata if a SingleCellExperiment object is provided
+#' @return A SingleCellExperiment object with labels in coldata, and the SOM model 
+#' in metadata if a SingleCellExperiment or SpatialExperiment object is provided
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -172,7 +203,7 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
 #' @importFrom SingleCellExperiment colData
 #' @export
 #' 
-runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
+runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL){
   
   if(is.null(numClusters)){
     stop("Please provide the number of clusters")
@@ -181,8 +212,8 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
   flag = FALSE
   
   # if we have a dataframe or a matrix
-  if(class(data) %in% c('data.frame', 'matrix')){
-    message("You have provided a dataset of class data.frame or matrix")
+  if(is(data, "data.frame") || is(data, "matrix")){
+    message(paste("You have provided a dataset of class", class(data)[[1]]))
     # if no markers are given, make sure all the columns are numeric
     if(is.null(markers)){
       num_numeric  <- sum(apply(data, 2, function(x) is.numeric(x)))
@@ -194,15 +225,12 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
       # extract the markers of interest
       data_new <- data[, markers]
     }
-  }
-  
-  # if we have a single cell experiment object
-  if(class(data) == "SingleCellExperiment"){
+  } else if(is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")){ # if we have a single cell experiment object
     flag = TRUE
-    message("You have provided a dataset of class SingleCellExperiment")
+    message(paste("You have provided a dataset of class", class(data)[[1]]))
     # make sure an assay is provided
     if(is.null(assay)){
-      stop("If a SingleCellExperiment, make sure the appropriate assay is provided as well")
+      stop(paste("If a",class(data)[[1]],"make sure the appropriate assay is provided as well"))
     }
     data_new <- t(assay(data, assay))
     
@@ -217,31 +245,9 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
       data_new <- data_new[, markers]
     }
     
-    
-  }
-  
-  # if we have a spatial experiment object
-  if(class(data) == "SpatialExperiment"){
-    flag = TRUE
-    message("You have provided a dataset of class SpatialExperiment")
-    # make sure an assay is provided
-    if(is.null(assay)){
-      stop("If a SpatialExperiment, make sure the appropriate assay is provided as well")
-    }
-    data_new <- t(assay(data, assay))
-    
-    # again if no markers are given, make sure all the columns are numeric
-    if(is.null(markers)){
-      num_numeric  <- sum(apply(data_new, 2, function(x) is.numeric(x)))
-      if(num_numeric != ncol(data_new)){
-        stop("If markers of interest are not provided, make sure the data contains all numeric columns")
-      } 
-    }else{
-      # extract the markers of interest
-      data_new <- data_new[, markers]
-    }
-    
-    
+  }else{
+    stop("Please provide a dataset of type SingleCellExperiment, SpatialExperiment,
+         data.frame or matrix")
   }
   
   # now we can run the FuseSOM algorithm
@@ -253,8 +259,7 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
   message("The FuseSOM algorithm has completed successfully")
   
   if(flag){
-    coldat <- cbind(colData(data), clusters)
-    colData(data) <- coldat
+    colData(res.sce)$clusters <- clusters
     metadata(data) <- append(metadata(data), list(SOM=som_model))
     return(data)
   }else{
@@ -272,13 +277,14 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
 #' 
 #' 
 #' 
-#' @param som_model the Self Organizing Map object generated by generatePrototypes()
+#' @param data the Self Organizing Map object generated by generatePrototypes(), or
+#' an object of class SingleCellExperiment or SpatialExperiment
 #' @param method one of Discriminant, Distance, Stability. By default, everything is run
 #' @param kseq a sequence of the number of clusters to try. Default is 2:20 clusters
-#' @return A list containing the optimal number of clusters for each class of method and the
-#' values over the sequence of k provided
-#' 
-#' 
+#' @return A list containing the cluster estimations if a dataframe 
+#' or matrix is provided
+#' @return A SingleCellExperiment object with the cluster estimation in the metadata 
+#' if a SingleCellExperiment or SpatialExperiment object is provided
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -289,11 +295,26 @@ runFuseSOM <- function(data, assay=NULL, markers=NULL, numClusters=NULL){
 #' @importFrom FCPS HierarchicalClustering
 #' @export
 #' 
-estimateNumcluster <- function(som_model, 
+estimateNumcluster <- function(data, 
                       method = c('Discriminant','Distance', 'Stability'),
                       kseq = 2:20 
 )
 {
+  
+  if(1 %in% kseq) stop('Please select a k sequence starting with 2: {2,3,...K}!')
+  
+  flag = FALSE
+  
+  # if we have a single cell experiment or spatial experiment object
+  if(is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")){
+    flag = TRUE
+    message(paste("You have provided a dataset of class:", class(data)[[1]]))
+    som_model <- data@metadata$SOM
+    
+  } else{ # if we just have the som model
+    som_model <- data
+  }
+  
   # extract the prototypes from the model
   prototypes <- som_model$prototypes
   
@@ -345,7 +366,13 @@ estimateNumcluster <- function(som_model,
                   'Distance'=k_dist,
                   'Stability'=k_stab)
   
-  return(outlist)
+  
+  if(flag){
+    metadata(data) <- append(metadata(data), list(clusterEstimation=outlist))
+    return(data)
+  }else{
+    return(outlist)
+  }
   
 }
 
@@ -368,11 +395,20 @@ estimateNumcluster <- function(som_model,
 #' @export
 #' 
 
-optiPlot <- function(k_est, method='jump'){
+optiPlot <- function(data, method='jump'){
   
   # make sure a valid method is provided
   if(!(method %in% c('jump', 'slope', 'wcd', 'gap', 'silhouette'))){
     stop('Please provide a valid method')
+  }
+  
+  # if we have a single cell experiment object
+  if(is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")){
+    message(paste("You have provided a dataset of class:", class(data)[[1]]))
+    k_est <- data@metadata$clusterEstimation
+    
+  } else { # if we just have the som model
+    k_est <- data
   }
   
   # extract the relevant information for the method provided

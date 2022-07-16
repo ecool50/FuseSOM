@@ -5,25 +5,24 @@
 \title{A wrapper function to run the FuseSOM algorithm.
 This function accepts a matrix, dataframe or a SingleCellExperiment object}
 \usage{
-runFuseSOM(data, assay = NULL, markers = NULL, numClusters = NULL)
+runFuseSOM(data, markers = NULL, numClusters = NULL, assay = NULL)
 }
 \arguments{
 \item{data}{a matrix, dataframe, SingleCellExperiment or SpatialExperiment object.
-For matrices
-and dataframes, it is assumed that markers are the columns and samples rows}
-
-\item{assay}{the assay of interest if SingleCellExperiment object is used}
+For matrices and dataframes, it is assumed that markers are the columns and samples rows}
 
 \item{markers}{the markers of interest. If this is not provided, all columns will be used}
+
+\item{assay}{the assay of interest if SingleCellExperiment object is used}
 
 \item{numCluster}{the number of clusters to be generated from the data}
 }
 \value{
-A list conataining the SOM model and the cluster labels if a dataframe
+A list containing the SOM model and the cluster labels if a dataframe
 or matrix is provided
 
-A Slist containing the SOM model and a ingleCellExperiment object with
-labels in coldata if a SingleCellExperiment object is provided
+A SingleCellExperiment object with labels in coldata, and the SOM model
+in metadata if a SingleCellExperiment or SpatialExperiment object is provided
 }
 \description{
 A wrapper function to run the FuseSOM algorithm.
