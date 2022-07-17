@@ -228,21 +228,33 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL){
   } else if(is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")){ # if we have a single cell experiment object
     flag = TRUE
     message(paste("You have provided a dataset of class", class(data)[[1]]))
-    # make sure an assay is provided
-    if(is.null(assay)){
-      stop(paste("If a",class(data)[[1]],"make sure the appropriate assay is provided as well"))
-    }
-    data_new <- t(assay(data, assay))
     
-    # again if no markers are given, make sure all the columns are numeric
-    if(is.null(markers)){
-      num_numeric  <- sum(apply(data_new, 2, function(x) is.numeric(x)))
-      if(num_numeric != ncol(data_new)){
-        stop("If markers of interest are not provided, make sure the data contains all numeric columns")
-      } 
+    # check if the prototypes have already been generated
+    if(!is.null(metadata(data)$SOM)){
+      message("The prototypes have already been generated. Will proceed to clustering the prototypes")
+      som_model <- metadata(data)$SOM
+      clusters <- clusterPrototypes(som_model, numClusters = numClusters)
+      colData(data)$clusters <- clusters
+      return(data)
+      
     }else{
-      # extract the markers of interest
-      data_new <- data_new[, markers]
+      # make sure an assay is provided
+      if(is.null(assay)){
+        stop(paste("If a",class(data)[[1]],"make sure the appropriate assay is provided as well"))
+      }
+      data_new <- t(assay(data, assay))
+      
+      # again if no markers are given, make sure all the columns are numeric
+      if(is.null(markers)){
+        num_numeric  <- sum(apply(data_new, 2, function(x) is.numeric(x)))
+        if(num_numeric != ncol(data_new)){
+          stop("If markers of interest are not provided, make sure the data contains all numeric columns")
+        } 
+      }else{
+        # extract the markers of interest
+        data_new <- data_new[, markers]
+      }
+      
     }
     
   }else{
@@ -259,7 +271,7 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL){
   message("The FuseSOM algorithm has completed successfully")
   
   if(flag){
-    colData(res.sce)$clusters <- clusters
+    colData(data)$clusters <- clusters
     metadata(data) <- append(metadata(data), list(SOM=som_model))
     return(data)
   }else{
