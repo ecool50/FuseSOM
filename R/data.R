@@ -1,16 +1,11 @@
 #' IMC Breast Cancer Data
 #' Data from A spatial atlas of breast cancer progression using MIBI-TOF 
 #' and tissue transcriptomics
-#' 
-#' 
-#' 
-#' 
-#'
-#' @docType data
-#'
-#' @usage data(risom)
+#' @usage data(risom_data)
 #'
 #' @format An object of class `"data.frame"`.
+#' @aliases 
+#' diabetesData
 #'
 #' @keywords datasets
 #'
