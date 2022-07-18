@@ -503,7 +503,7 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL){
     if(num_numeric != ncol(data)){
       stop("If markers of interest are not provided, make sure the data contains all numeric columns")
     } 
-    message("Now markers provided, will be using all columns as markers")
+    message("No markers provided, will be using all columns as markers")
     markers <- colnames(data)
   }
 
