@@ -496,18 +496,21 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL){
     stop("Make sure you are passing in a dataframe or matrix")
   }
   
-  if(is.null(markers)){
-    message("Now markers provided, will be using all columns as markers")
-    markers <- colnames(as.data.frame(data))
-  }
-  # get the data of interest
-  features <- data[, markers]
   
-  # make all the columns numeric
-  features <- as.data.frame(apply(features, 2, function(x) as.numeric(x)))
+  # again if no markers are given, make sure all the columns are numeric
+  if(is.null(markers)){
+    num_numeric  <- sum(apply(data, 2, function(x) is.numeric(x)))
+    if(num_numeric != ncol(data)){
+      stop("If markers of interest are not provided, make sure the data contains all numeric columns")
+    } 
+    message("Now markers provided, will be using all columns as markers")
+    markers <- colnames(data)
+  }
+
+  features <- data[, markers]
   # do some wrangling to get it in the proper format
   features_heatmap <- aggregate(.~as.character(clusters),
-                                features,
+                                features[,markers],
                                 mean)
   rownames(features_heatmap) <- features_heatmap[,1]
   features_heatmap <- features_heatmap[,-1]
@@ -516,7 +519,7 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL){
   features_heatmap <- sweep(features_heatmap,2, colMeans(features_heatmap), "-")
   features_heatmap <- sweep(features_heatmap,2, apply(features_heatmap,2,sd), "/")
   features_heatmap[features_heatmap>2] <- 2
-  features_heatmap[features_heatmap<-2] <- -2
+  features_heatmap[features_heatmap< -2] <- -2
   
   # compute the heatmap annotations
   annotation_row = data.frame(Clusters = rownames(features_heatmap))
@@ -526,12 +529,10 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL){
   rownames(features_heatmap) <- rn
   rownames(annotation_row) <- rownames(features_heatmap)
   
-  # remove duplicates
   gaps_row <- which(!duplicated(substr(rownames(features_heatmap),1,2)))[-1]-1
   
-  # generate the heatmap
-  p.heatmap <- ggplotify::as.ggplot(pheatmap::pheatmap(features_heatmap, gaps_row = gaps_row, 
+  p <- ggplotify::as.ggplot(pheatmap(features_heatmap, gaps_row = gaps_row, 
                                      annotation_row = annotation_row, annotation_legend = FALSE, 
-                                     cluster_rows = FALSE, cluster_cols = F, fontsize = 14))
-  return(p.heatmap)
+                                     cluster_rows = FALSE, cluster_cols = F, fontsize = 16))
+  return(p)
 }
