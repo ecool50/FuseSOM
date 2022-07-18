@@ -8,7 +8,7 @@ A correlation based multiview self organizing map for the characterization of ce
 Overview
 --------
 
-**FuseSOM** provides a pipeline for the clustering of `Image Mass Cytomeytry (IMC)` data.
+**FuseSOM** provides a pipeline for the clustering of `Image Mass Cytometry (IMC)` data.
 This pipeline uses the `Self Organizing Map` architecture coupled with `Multiview` hierarchical clustering.
 We also provide functions for normalisation and estimation of the number of clusters.
 
