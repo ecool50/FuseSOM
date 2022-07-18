@@ -2,7 +2,7 @@
 
 export(clusterPrototypes)
 export(computeGridsize)
-export(estimateNumcluster)
+export(estimateNumCluster)
 export(generatePrototypes)
 export(markerHeatmap)
 export(normaliseData)

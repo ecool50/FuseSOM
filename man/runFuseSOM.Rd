@@ -5,7 +5,14 @@
 \title{A wrapper function to run the FuseSOM algorithm.
 This function accepts a matrix, dataframe or a SingleCellExperiment object}
 \usage{
-runFuseSOM(data, markers = NULL, numClusters = NULL, assay = NULL)
+runFuseSOM(
+  data,
+  markers = NULL,
+  numClusters = NULL,
+  assay = NULL,
+  clusterCol = "clusters",
+  verbose = FALSE
+)
 }
 \arguments{
 \item{data}{a matrix, dataframe, SingleCellExperiment or SpatialExperiment object.
@@ -14,6 +21,10 @@ For matrices and dataframes, it is assumed that markers are the columns and samp
 \item{markers}{the markers of interest. If this is not provided, all columns will be used}
 
 \item{assay}{the assay of interest if SingleCellExperiment object is used}
+
+\item{clusterCol}{the name of the column to store the clusters in}
+
+\item{verbose}{should the generation of the Self Organising Map be printed}
 
 \item{numCluster}{the number of clusters to be generated from the data}
 }

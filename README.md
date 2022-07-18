@@ -1,6 +1,8 @@
 FuseSOM
 ======================================================
 
+<img src=inst/FuseSOM.png height="200">
+
 A correlation based multiview self organizing map for the characterization of cell types in IMC data.
 
 Overview

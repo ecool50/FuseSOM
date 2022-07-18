@@ -191,7 +191,9 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
 #' For matrices and dataframes, it is assumed that markers are the columns and samples rows
 #' @param assay the assay of interest if SingleCellExperiment object is used
 #' @param markers the markers of interest. If this is not provided, all columns will be used
-#' @param  numCluster the number of clusters to be generated from the data
+#' @param numCluster the number of clusters to be generated from the data
+#' @param clusterCol the name of the column to store the clusters in
+#' @param verbose should the generation of the Self Organising Map be printed
 #' @return A list containing the SOM model and the cluster labels if a dataframe 
 #' or matrix is provided
 #' @return A SingleCellExperiment object with labels in coldata, and the SOM model 
@@ -203,7 +205,8 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
 #' @importFrom SingleCellExperiment colData
 #' @export
 #' 
-runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL){
+runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
+                       clusterCol='clusters', verbose=FALSE){
   
   if(is.null(numClusters)){
     stop("Please provide the number of clusters")
@@ -229,34 +232,61 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL){
     flag = TRUE
     message(paste("You have provided a dataset of class", class(data)[[1]]))
     
-    # check if the prototypes have already been generated
-    if(!is.null(metadata(data)$SOM)){
-      message("The prototypes have already been generated. Will proceed to clustering the prototypes")
-      som_model <- metadata(data)$SOM
-      clusters <- clusterPrototypes(som_model, numClusters = numClusters)
-      colData(data)$clusters <- clusters
-      return(data)
-      
+    # make sure an assay is provided
+    if(is.null(assay)){
+      stop(paste("If a",class(data)[[1]],"make sure the appropriate assay is provided as well"))
+    }
+    data_new <- t(assay(data, assay))
+    
+    # again if no markers are given, make sure all the columns are numeric
+    if(is.null(markers)){
+      num_numeric  <- sum(apply(data_new, 2, function(x) is.numeric(x)))
+      if(num_numeric != ncol(data_new)){
+        stop("If markers of interest are not provided, make sure the data contains all numeric columns")
+      } 
     }else{
-      # make sure an assay is provided
-      if(is.null(assay)){
-        stop(paste("If a",class(data)[[1]],"make sure the appropriate assay is provided as well"))
-      }
-      data_new <- t(assay(data, assay))
-      
-      # again if no markers are given, make sure all the columns are numeric
-      if(is.null(markers)){
-        num_numeric  <- sum(apply(data_new, 2, function(x) is.numeric(x)))
-        if(num_numeric != ncol(data_new)){
-          stop("If markers of interest are not provided, make sure the data contains all numeric columns")
-        } 
-      }else{
-        # extract the markers of interest
-        data_new <- data_new[, markers]
-      }
-      
+      # extract the markers of interest
+      data_new <- data_new[, markers]
     }
     
+    
+    # check if the prototypes have already been generated
+    if(!is.null(metadata(data)$SOM)){
+      message("The prototypes have already been generated. Checking to see if the current markes were used to generate the prototypes")
+      # check to see if the same markers were used to generate the previous SOM
+      old_som <- metadata(data)$SOM
+      old_markers <- colnames(old_som$prototypes)
+      
+      # if no markers were provided
+      if(is.null(markers)){
+        if(identical(old_markers,colnames(dat_new))){
+          message('The same markers were used to generate the prototypes. Will proceed to clustering the prototypes')
+          clusters <- clusterPrototypes(old_som, numClusters = numClusters)
+          colData(data)$clusters <- clusters
+          # update the cluster name
+          names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
+          return(data)
+        } else{
+          message('Different markers were used to generate the prototypes. Will regenerate the self organizing map and then cluster prototypes')
+        }
+        
+        # markers were provided
+      } else{
+        if(identical(old_markers,markers)){
+          message('The same markers were used to generate the prototypes. Will proceed to clustering the prototypes')
+          clusters <- clusterPrototypes(old_som, numClusters = numClusters)
+          colData(data)$clusters <- clusters
+          # update the cluster name
+          names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
+          return(data)
+        } else{
+          message('Different markers were used to generate the prototypes. Will regenerate the self organizing map and then cluster prototypes')
+        }
+        
+      }
+        
+     
+    }
   }else{
     stop("Please provide a dataset of type SingleCellExperiment, SpatialExperiment,
          data.frame or matrix")
@@ -265,13 +295,15 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL){
   # now we can run the FuseSOM algorithm
   message("Everything looks good. Now running the FuseSOM algorithm")
   data_new <- apply(data_new, 2, function(x) as.numeric(x))
-  som_model <- generatePrototypes(data_new)
+  som_model <- generatePrototypes(data_new, verbose=verbose)
   clusters <- clusterPrototypes(som_model, numClusters = numClusters)
   
   message("The FuseSOM algorithm has completed successfully")
   
   if(flag){
     colData(data)$clusters <- clusters
+    # update the cluster name
+    names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
     metadata(data) <- append(metadata(data), list(SOM=som_model))
     return(data)
   }else{
@@ -307,7 +339,7 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL){
 #' @importFrom FCPS HierarchicalClustering
 #' @export
 #' 
-estimateNumcluster <- function(data, 
+estimateNumCluster <- function(data, 
                       method = c('Discriminant','Distance', 'Stability'),
                       kseq = 2:20 
 )
