@@ -259,7 +259,7 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
       
       # if no markers were provided
       if(is.null(markers)){
-        if(identical(old_markers,colnames(dat_new))){
+        if(identical(old_markers,colnames(data_new))){
           message('The same markers were used to generate the prototypes. Will proceed to clustering the prototypes')
           clusters <- clusterPrototypes(old_som, numClusters = numClusters)
           colData(data)$clusters <- clusters
@@ -565,6 +565,6 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL){
   
   p <- ggplotify::as.ggplot(pheatmap(features_heatmap, gaps_row = gaps_row, 
                                      annotation_row = annotation_row, annotation_legend = FALSE, 
-                                     cluster_rows = FALSE, cluster_cols = F, fontsize = 16))
+                                     cluster_rows = FALSE, cluster_cols = F, fontsize = 14))
   return(p)
 }
