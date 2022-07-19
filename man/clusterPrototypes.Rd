@@ -18,3 +18,11 @@ the cluster labels
 Clustering is done using hierarchical clustering with
 the average linkage function
 }
+\examples{
+ 
+data("risom_dat")
+risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+prototypes <- generatePrototypes(risom_dat[, risom_markers])
+clusters <- clusterPrototypes(prototypes, 23)
+
+}

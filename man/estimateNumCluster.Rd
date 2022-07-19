@@ -32,6 +32,14 @@ A function for estimating the number of clusters using various method
 Methods available are: Discriminant, Distance
 (Gap, Silhouette, Slope, Jump, and Within Cluster Distance,) and Instability
 }
+\examples{
+ 
+data("risom_dat")
+risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+res <- runFuseSOM(risom_dat, markers=risom_markers, numClusters=23)
+res.est.k <- estimateNumCluster(res$model, kseq=2:25)
+
+}
 \author{
 Elijah WIllie \href{mailto:ewil3501@uni.sydney.edu.au}{ewil3501@uni.sydney.edu.au}
 }

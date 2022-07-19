@@ -4,7 +4,14 @@
 \alias{markerHeatmap}
 \title{A function for generating a heat map of marker expression across clusters}
 \usage{
-markerHeatmap(data, markers = NULL, clusters = NULL)
+markerHeatmap(
+  data,
+  markers = NULL,
+  clusters = NULL,
+  threshold = 2,
+  clusterMarkers = FALSE,
+  fontSize = 14
+)
 }
 \arguments{
 \item{data}{a matrix or dataframe where the rows are samples and columns are
@@ -14,12 +21,25 @@ markers}
 will be used}
 
 \item{clusters}{a vector of cluster labels}
+
+\item{threshold}{the value to threshold the marker expression at}
+
+\item{clusterMarkers}{should the rows(markers) of the heatmap be clustered}
+
+\item{fontSize}{the size of the text on the heatmap}
 }
 \value{
-an elbow plot object where the optimal number of clusters is marked
+a heatmap with the markers in the rows and clusters in the columns
 }
 \description{
 A function for generating a heat map of marker expression across clusters
+}
+\examples{
+data("risom_dat")
+risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+res <- runFuseSOM(risom_dat, markers=risom_markers, numClusters=23)
+p.heat <- markerHeatmap(risom_dat, risom_markers, clusters=res$clusters)
+
 }
 \author{
 Elijah WIllie \href{mailto:ewil3501@uni.sydney.edu.au}{ewil3501@uni.sydney.edu.au}

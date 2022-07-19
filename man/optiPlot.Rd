@@ -23,6 +23,14 @@ returned by the estimateNumcluster() function
 Methods available are:
 Gap, Silhouette, Slope, Jump, and Within Cluster Distance(WCD)
 }
+\examples{
+data("risom_dat")
+risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+res <- runFuseSOM(risom_dat, markers=risom_markers, numClusters=23)
+res.est.k <- estimateNumCluster(res$model, kseq=2:25)
+p <- optiPlot(res.est.k, method='jump')
+
+}
 \author{
 Elijah WIllie \href{mailto:ewil3501@uni.sydney.edu.au}{ewil3501@uni.sydney.edu.au}
 }

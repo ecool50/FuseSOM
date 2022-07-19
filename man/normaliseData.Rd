@@ -25,6 +25,12 @@ normalise Marker Intensities
 The matrix of intensities is normalised based on one of four different method
 These methods include Percentile, zscore, arsinh and minmax
 }
+\examples{
+data("risom_dat")
+risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+normaliseData(risom_dat[, risom_markers])
+
+}
 \author{
 Elijah WIllie \href{mailto:ewil3501@uni.sydney.edu.au}{ewil3501@uni.sydney.edu.au}
 }
