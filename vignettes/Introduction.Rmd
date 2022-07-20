@@ -153,7 +153,7 @@ Next we pass it to the `runFuseSOM()` function. Here, we can provide the assay i
 
 ```{r}
 risom.res.sce <- runFuseSOM(sce, markers = risom_markers, assay = 'counts', 
-                      numClusters = 23, verbose = F)
+                      numClusters = 23, verbose = FALSE)
 
 colnames(colData(risom.res.sce))
 names(metadata(risom.res.sce))
@@ -211,3 +211,9 @@ Again, from the plots, we see that both the `Gap` and the `Jump` statistics perf
 
 ## `FuseSOM` Spatial Epxeriment object as input.
 The methodology for `Spatial Epxeriment` is exactly the same as that of `Single Cell Epxeriment`
+
+# sessionInfo()
+
+```{r}
+sessionInfo()
+```

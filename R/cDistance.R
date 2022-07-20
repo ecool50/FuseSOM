@@ -4,8 +4,8 @@
 
 .cDistance <- function(data, # n x p data matrix
                       kseq, #sequence of ks to be checked
-                      linkage = 'average',
-                      gapIter = 10) # number of simulated datasets in gap statistic
+                      linkage='average',
+                      gapIter=10) # number of simulated datasets in gap statistic
 {
   
   # ----- INPUT TESTS

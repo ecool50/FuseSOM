@@ -221,6 +221,7 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
 #' @param numCluster the number of clusters to be generated from the data
 #' @param clusterCol the name of the column to store the clusters in
 #' @param verbose should the generation of the Self Organising Map be printed
+#' 
 #' @return A list containing the SOM model and the cluster labels if a dataframe 
 #' or matrix is provided
 #' @return A SingleCellExperiment object with labels in coldata, and the SOM model 
@@ -234,7 +235,6 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
 #'
-#' @importFrom SingleCellExperiment colData
 #' @export
 #' 
 runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
@@ -368,7 +368,6 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
-#' @import SingleCellExperiment
 #' @importFrom coop tcosine
 #' @importFrom analogue fuse
 #' @importFrom psych cor2dist
@@ -577,7 +576,7 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL, threshold=2,
     stop("Please provide a vector of cluster labels")
   }
   
-  if(!((class(data) == 'matrix') || (class(data) == 'data.frame'))){
+  if(!(is(data, "matrix") || is(data, "data.frame"))){
     stop("Make sure you are passing in a dataframe or matrix")
   }
   

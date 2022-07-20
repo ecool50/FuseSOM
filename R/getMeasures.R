@@ -4,8 +4,8 @@
 # function was obtained from https://github.com/cran/cstab with some minor modifications
 .getMeasures <- function(data,
                         k,
-                        linkage = 'average',
-                        measures = c('wcd','sil','mse'))
+                        linkage='average',
+                        measures=c('wcd','sil','mse'))
   
 {
   

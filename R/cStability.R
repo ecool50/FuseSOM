@@ -2,19 +2,18 @@
 # see https://arxiv.org/abs/1608.07494
 # function was obtained from https://github.com/cran/cstab with some minor modifications
 .cStability <- function(data, # n x p data matrix
-                       kseq = 2:20, # sequence of ks tested
-                       nB   = 10, # number of bootstrap comparisons
-                       norm = TRUE, # norm over pw equal assign,FALSE=as in Wang etal
-                       predict = TRUE, # use prediction approach, if FALSE, use brute pair in equal cluster approach
-                       linkage = 'average', # or average, or ...
-                       pbar = T
+                       kseq=2:20, # sequence of ks tested
+                       nB=10, # number of bootstrap comparisons
+                       norm=TRUE, # norm over pw equal assign,FALSE=as in Wang etal
+                       predict=TRUE, # use prediction approach, if FALSE, use brute pair in equal cluster approach
+                       linkage='average', # or average, or ...
+                       pbar=TRUE
                         )
 
 {
   
   
   # ---------- Input Checks ----------
-  set.seed(1994)
   # On Data
   if(sum(is.na(data))>0) stop('No missing values permitted!')
   
@@ -36,8 +35,8 @@
   ind <- list()
   share <- list()
   for(b in 1:nB) {
-    tmp_1 <- sample(1:n_obj, n_obj, replace=T)
-    tmp_2 <- sample(1:n_obj, n_obj, replace=T)
+    tmp_1 <- sample(1:n_obj, n_obj, replace=TRUE)
+    tmp_2 <- sample(1:n_obj, n_obj, replace=TRUE)
     tmp_1 <- tmp_1[order(tmp_1)]
     tmp_2 <- tmp_2[order(tmp_2)]
     ind[[b]] <- list(tmp_1,tmp_2)

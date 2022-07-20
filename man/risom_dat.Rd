@@ -14,7 +14,7 @@ An object of class \code{"data.frame"}.
 Mendeley Data, \url{https://data.mendeley.com/datasets/d87vg86zd8/3}
 }
 \usage{
-data(risom_data)
+data(risom_dat)
 }
 \description{
 IMC Breast Cancer Data
