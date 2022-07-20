@@ -3,12 +3,13 @@ FuseSOM
 
 <img src=inst/FuseSOM.png height="200">
 
-A correlation based multiview self organizing map for the characterization of cell types in IMC data.
+A correlation based `Multiview` Self Organizing Map for the characterization of 
+cell types in `highly multiplexed in situ imaging cytometry assays` data.
 
 Overview
 --------
 
-**FuseSOM** provides a pipeline for the clustering of `Image Mass Cytometry (IMC)` data.
+**FuseSOM** provides a pipeline for the clustering of `highly multiplexed in situ imaging cytometry assays` data.
 This pipeline uses the `Self Organizing Map` architecture coupled with `Multiview` hierarchical clustering.
 We also provide functions for normalisation and estimation of the number of clusters.
 

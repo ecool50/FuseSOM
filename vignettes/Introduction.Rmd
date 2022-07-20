@@ -18,7 +18,7 @@ opts_chunk$set(fig.align = 'center', fig.width = 6, fig.height = 5, dev = 'png')
 
 # Introduction
 
-A correlation based multiview self organizing map for the characterization of cell types in IMC data (`FuseSOM`) is a tool for unsupervised clustering of IMC data. `FuseSOM` is robust and achieves high accuracy by combining a `Self Organizing Map` architecture and a `Multiview` integration of correlation based metrics to cluster IMC data. The `FuseSOM` pipeline has been streamlined and accepts currently used data structures including `SingleCellExperiment` and `SpatialExperiment` objects as well as `DataFrames`.
+A correlation based multiview self organizing map for the characterization of cell types (`FuseSOM`) is a tool for unsupervised clustering. `FuseSOM` is robust and achieves high accuracy by combining a `Self Organizing Map` architecture and a `Multiview` integration of correlation based metrics to cluster highly multiplexed in situ imaging cytometry assays. The `FuseSOM` pipeline has been streamlined and accepts currently used data structures including `SingleCellExperiment` and `SpatialExperiment` objects as well as `DataFrames`.
 
 # Disclaimer
 
@@ -32,7 +32,6 @@ If you have a matrix containing expression data that was QCed and normalised by 
 
 ```{r, message=FALSE, warning=FALSE}
 # load FuseSOM
-devtools::load_all()
 library(FuseSOM)
 
 ```
