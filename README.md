@@ -9,7 +9,7 @@ cell types in `highly multiplexed in situ imaging cytometry assays` data.
 Overview
 --------
 
-**FuseSOM** provides a pipeline for the clustering of `highly multiplexed in situ imaging cytometry assays` data.
+**FuseSOM** provides a pipeline for the clustering of `highly multiplexed in situ imaging cytometry assays`.
 This pipeline uses the `Self Organizing Map` architecture coupled with `Multiview` hierarchical clustering.
 We also provide functions for normalisation and estimation of the number of clusters.
 
