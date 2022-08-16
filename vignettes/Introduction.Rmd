@@ -162,18 +162,18 @@ sce
 Next we pass it to the `runFuseSOM()` function. Here, we can provide the assay in which the data is stored and what name to store the clusters under in the colData section. Note that the `Self Organizing Map` that is generated will be stored in the metadata field.
 
 ```{r}
-risomResce <- runFuseSOM(sce, markers = risomMarkers, assay = 'counts', 
+risomRessce <- runFuseSOM(sce, markers = risomMarkers, assay = 'counts', 
                       numClusters = 23, verbose = FALSE)
 
-colnames(colData(risomResce))
-names(metadata(risomResce))
+colnames(colData(risomRessce))
+names(metadata(risomRessce))
 ```
 Notice how the there is now a clusters column in the colData and SOM field in the metadata. You can run this function again with a new set of cluster number. If you provide a new name for the clusters, it will be stored under that new column, else, it will overwrite the current clusters column. Running it again on the same object will overwrite the SOM field in the metadata.
 
 Just like before, lets plot the heatmap of the resulting clusters across all markers.
 ```{r}
 data <- risom_dat[, risomMarkers] # get the original data used
-clusters <- colData(risomResce)$clusters # extract the clusters from the sce object
+clusters <- colData(risomRessce)$clusters # extract the clusters from the sce object
 # generate the heatmap
 risomHeatsce <- markerHeatmap(data = risom_dat, markers = risomMarkers,
                             clusters = clusters, clusterMarkers = TRUE)
