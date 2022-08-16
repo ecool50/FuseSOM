@@ -23,7 +23,7 @@
   nd_type <- rep("", n-1)
   
   # run significance testing on each node
-  for (k in 1:(n-1)) {
+  for (k in seq_len(n-1)) {
     ## indices for subtree
     idx_vals <- idx_hc[k, ]
     idx_sub <- unlist(idx_hc[k, ])
@@ -69,8 +69,8 @@
 # see https://github.com/pkimes/sigclust2
 .pdMap <- function(hc, n) {
   ## determine parent branch node for all children nodes along dendrogram
-  pd_pairs <- rbind(cbind(hc$merge[, 1], 1:(n-1)), 
-                    cbind(hc$merge[, 2], 1:(n-1)))
+  pd_pairs <- rbind(cbind(hc$merge[, 1], seq_len(n-1)), 
+                    cbind(hc$merge[, 2], seq_len(n-1)))
   pd_map <- data.frame(pd_pairs[pd_pairs[, 1] > 0, ])
   names(pd_map) <- c("dtr", "prt")
   pd_map <- pd_map$prt[order(pd_map$dtr)] #the parent of each daughter
@@ -91,7 +91,7 @@
   idx_hc[(n+1):(2*n-1), ] <- hc$merge + n + (hc$merge<0)
   
   ## complete idx_hc
-  for (k in 1:(n-1)) {
+  for (k in seq_len(n-1)) {
     idx_hc[[n+k, 1]] <- unlist(idx_hc[idx_hc[[n+k, 1]], ])
     idx_hc[[n+k, 2]] <- unlist(idx_hc[idx_hc[[n+k, 2]], ])
   }

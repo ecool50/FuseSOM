@@ -34,9 +34,9 @@
   
   ind <- list()
   share <- list()
-  for(b in 1:nB) {
-    tmp_1 <- sample(1:n_obj, n_obj, replace=TRUE)
-    tmp_2 <- sample(1:n_obj, n_obj, replace=TRUE)
+  for(b in seq_len(nB)) {
+    tmp_1 <- sample(seq_len(n_obj), n_obj, replace=TRUE)
+    tmp_2 <- sample(seq_len(n_obj), n_obj, replace=TRUE)
     tmp_1 <- tmp_1[order(tmp_1)]
     tmp_2 <- tmp_2[order(tmp_2)]
     ind[[b]] <- list(tmp_1,tmp_2)
@@ -57,7 +57,7 @@
   
   if(pbar)  pb <- utils::txtProgressBar(min=0, max=nB, style = 2)
   
-  for(b in 1:nB) {
+  for(b in seq_len(nB)) {
     for(k in kseq) {
         #t = proc.time()[3]
       hc_1 = fastcluster::hclust(stats::as.dist(distm[ind[[b]][[1]],ind[[b]][[1]]]), method = linkage)

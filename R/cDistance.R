@@ -38,7 +38,7 @@
   # ----- EVALUATE SYNTHETIC DATA (Gap-statistic)
   
   WCD_runs = matrix(NA,nrow=gapIter, ncol=length(kseq))
-  for(i in 1:gapIter) {
+  for(i in seq_len(gapIter)) {
     data_syn = .uniformData(data)
     WCDs = numeric()
     for(j in 1:length(kseq)) {
@@ -46,7 +46,7 @@
       obj = .getMeasures(data = data_syn, k = k, measures = c('wcd'))
       WCDs[j] = obj$WCD
     }
-    WCD_runs[i,] = WCDs
+    WCD_runs[i, ] = WCDs
   }
   WCD_syn = colMeans(WCD_runs)
   
