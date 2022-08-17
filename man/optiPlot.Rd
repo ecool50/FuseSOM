@@ -12,7 +12,7 @@ optiPlot(data, method = "jump")
 \arguments{
 \item{method}{one of 'jump', 'slope', 'wcd', 'gap', or 'silhouette'}
 
-\item{k_est}{the estimation list returned by estimateNumcluster()}
+\item{kEst}{the estimation list returned by estimateNumcluster()}
 }
 \value{
 an elbow plot object where the optimal number of clusters is marked
@@ -25,10 +25,10 @@ Gap, Silhouette, Slope, Jump, and Within Cluster Distance(WCD)
 }
 \examples{
 data("risom_dat")
-risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-res <- runFuseSOM(risom_dat, markers=risom_markers, numClusters=23)
-res.est.k <- estimateNumCluster(res$model, kseq=2:25)
-p <- optiPlot(res.est.k, method='jump')
+risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23)
+resEstK <- estimateNumCluster(res$model, kSeq=2:25)
+p <- optiPlot(resEstK, method='jump')
 
 }
 \author{

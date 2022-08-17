@@ -4,10 +4,10 @@
 \alias{clusterPrototypes}
 \title{Cluster the prototypes from the Self Organizing Map}
 \usage{
-clusterPrototypes(som_model, numClusters = NULL)
+clusterPrototypes(somModel, numClusters = NULL)
 }
 \arguments{
-\item{som_model}{the self organizing map}
+\item{somModel}{the self organizing map}
 
 \item{numClusters}{the number of clusters to generate}
 }
@@ -21,8 +21,8 @@ the average linkage function
 \examples{
  
 data("risom_dat")
-risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-prototypes <- generatePrototypes(risom_dat[, risom_markers])
+risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+prototypes <- generatePrototypes(risom_dat[, risomMarkers])
 clusters <- clusterPrototypes(prototypes, 23)
 
 }

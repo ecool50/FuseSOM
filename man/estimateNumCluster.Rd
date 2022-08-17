@@ -9,7 +9,7 @@ Methods available are: Discriminant, Distance
 estimateNumCluster(
   data,
   method = c("Discriminant", "Distance", "Stability"),
-  kseq = 2:20
+  kSeq = 2:20
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ an object of class SingleCellExperiment or SpatialExperiment}
 
 \item{method}{one of Discriminant, Distance, Stability. By default, everything is run}
 
-\item{kseq}{a sequence of the number of clusters to try. Default is 2:20 clusters}
+\item{kSeq}{a sequence of the number of clusters to try. Default is 2:20 clusters}
 }
 \value{
 A list containing the cluster estimations if a dataframe
@@ -35,9 +35,9 @@ Methods available are: Discriminant, Distance
 \examples{
  
 data("risom_dat")
-risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-res <- runFuseSOM(risom_dat, markers=risom_markers, numClusters=23)
-res.est.k <- estimateNumCluster(res$model, kseq=2:25)
+risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23)
+res.est.k <- estimateNumCluster(res$model, kSeq=2:25)
 
 }
 \author{

@@ -2,63 +2,63 @@
 # function to estimate the number of clusters using discriminant analysis
 # parts of this function is based on the sigclust2 package by Patrick Kimes
 # see https://github.com/pkimes/sigclust2
-.runDiscriminant <- function(dist_mat, minClusterSize, alpha=0.001){
+.runDiscriminant <- function(distMat, minClusterSize, alpha=0.001){
   
   # do some house keeping
-  n <- nrow(dist_mat)
-  p <- ncol(dist_mat)
-  nd_type <- rep("", n-1)
-  p_emp <- rep(0, n-1)
+  n <- nrow(distMat)
+  p <- ncol(distMat)
+  ndType <- rep("", n-1)
+  pEmp <- rep(0, n-1)
   
   numClusters <- 0
   
   # generate the initial tree
-  init_tree <- fastcluster::hclust(dist(dist_mat, method = 'maximum'), method = "average")
+  initTree <- fastcluster::hclust(dist(distMat, method = 'maximum'), method = "average")
   
   # process the resulting dendrogram
-  hc_dat <- init_tree
-  idx_hc <- .idxHc(init_tree, n)
-  cutoff <- .fwerCutoffmatrix(idx_hc, alpha)
-  pd_map <- .pdMap(init_tree, n)
-  nd_type <- rep("", n-1)
+  hcDat <- initTree
+  idxHC <- .idxHc(initTree, n)
+  cutoff <- .fwerCutoffmatrix(idxHC, alpha)
+  pdMap <- .pdMap(initTree, n)
+  ndType <- rep("", n-1)
   
   # run significance testing on each node
   for (k in seq_len(n-1)) {
     ## indices for subtree
-    idx_vals <- idx_hc[k, ]
-    idx_sub <- unlist(idx_hc[k, ])
-    n_sub <- length(idx_sub)
+    idxVals <- idxHC[k, ]
+    idxSub <- unlist(idxHC[k, ])
+    nSub <- length(idxSub)
     
     ## only calc p-values for branches w/ more than n_mini
-    if (n_sub < minClusterSize) {
-      nd_type[k] <- "n_small"
+    if (nSub < minClusterSize) {
+      ndType[k] <- "n_small"
       next
     }
     
-    if ((alpha < 1) && (k > 1) && (nd_type[pd_map[k]] != "sig")) {
-      nd_type[k] <- "no_test"
-      p_emp[k] <- 1
+    if ((alpha < 1) && (k > 1) && (ndType[pdMap[k]] != "sig")) {
+      ndType[k] <- "no_test"
+      pEmp[k] <- 1
       next
     }
     
     # Generate initial assingments
-    t <- c(idx_vals[[1]], idx_vals[[2]])
-    x_comb <- dist_mat[t,t]
-    assignments <- kmeans(x_comb, 2)$cluster
+    t <- c(idxVals[[1]], idxVals[[2]])
+    xComb <- distMat[t,t]
+    assignments <- kmeans(xComb, 2)$cluster
     
     # compute the discriminant projections
-    x_new <- fpc::discrcoord(x=x_comb, clvecd = assignments)$proj[, 1]
-    res.pval <- diptest::dip.test(x_new)$p.value
+    xNew <- fpc::discrcoord(x=xComb, clvecd = assignments)$proj[, 1]
+    resPval <- diptest::dip.test(xNew)$p.value
     
     # update results
     if(alpha < 1){
-      if(res.pval < alpha ){
-        nd_type[k] <- "sig"
+      if(resPval < alpha ){
+        ndType[k] <- "sig"
         numClusters = numClusters + 1
       } else{
-        nd_type[k] <- "not_sig"
+        ndType[k] <- "not_sig"
       }
-      p_emp[k] <- res.pval
+      pEmp[k] <- resPval
     }
   }
   return(numClusters)
@@ -69,15 +69,15 @@
 # see https://github.com/pkimes/sigclust2
 .pdMap <- function(hc, n) {
   ## determine parent branch node for all children nodes along dendrogram
-  pd_pairs <- rbind(cbind(hc$merge[, 1], seq_len(n-1)), 
+  pdPairs <- rbind(cbind(hc$merge[, 1], seq_len(n-1)), 
                     cbind(hc$merge[, 2], seq_len(n-1)))
-  pd_map <- data.frame(pd_pairs[pd_pairs[, 1] > 0, ])
-  names(pd_map) <- c("dtr", "prt")
-  pd_map <- pd_map$prt[order(pd_map$dtr)] #the parent of each daughter
-  pd_map <- c(pd_map, n) #add final node without a parent
+  pdMap <- data.frame(pdPairs[pdPairs[, 1] > 0, ])
+  names(pdMap) <- c("dtr", "prt")
+  pdMap <- pdMap$prt[order(pdMap$dtr)] #the parent of each daughter
+  pdMap <- c(pdMap, n) #add final node without a parent
   
   ## flip index, hclust and shc use reversed ordering
-  n - rev(pd_map)
+  n - rev(pdMap)
 }
 
 
@@ -86,18 +86,18 @@
 # see https://github.com/pkimes/sigclust2
 .idxHc <- function(hc, n) {
   ## list array of cluster indices at each of the n-1 merges
-  idx_hc <- array(list(), c(2*n-1, 2))
-  idx_hc[1:n, 1] <- as.list(n:1)
-  idx_hc[(n+1):(2*n-1), ] <- hc$merge + n + (hc$merge<0)
+  idxHC <- array(list(), c(2*n-1, 2))
+  idxHC[1:n, 1] <- as.list(n:1)
+  idxHC[(n+1):(2*n-1), ] <- hc$merge + n + (hc$merge<0)
   
-  ## complete idx_hc
+  ## complete idxHC
   for (k in seq_len(n-1)) {
-    idx_hc[[n+k, 1]] <- unlist(idx_hc[idx_hc[[n+k, 1]], ])
-    idx_hc[[n+k, 2]] <- unlist(idx_hc[idx_hc[[n+k, 2]], ])
+    idxHC[[n+k, 1]] <- unlist(idxHC[idxHC[[n+k, 1]], ])
+    idxHC[[n+k, 2]] <- unlist(idxHC[idxHC[[n+k, 2]], ])
   }
   
   ## flip index, hclust and shc use revered ordering
-  idx_hc[(2*n-1):(n+1), ]
+  idxHC[(2*n-1):(n+1), ]
 }
 
 # parts of this function is based on the sigclust2 package by Patrick Kimes

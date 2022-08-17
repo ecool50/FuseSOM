@@ -1,6 +1,6 @@
 Package: FuseSOM
 Title: A Correlation Based Multiview Self Organizing Maps Clustering For IMC Datasets
-Version: 1.0.0
+Version: 0.99.0
 Authors@R: 
     person("Elijah", "Willie", , "ewil3501@uni.sydney.edu.au", role = c("aut", "cre"))
 Description: A correlation based multiview self organizing map for the characterization of cell types (`FuseSOM`) 

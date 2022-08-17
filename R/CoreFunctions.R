@@ -9,8 +9,8 @@
 #' 
 #' @examples
 #' data("risom_dat")
-#' risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' computeGridSize(risom_dat[, risom_markers])
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' computeGridSize(risom_dat[, risomMarkers])
 #' 
 #' 
 #' @author
@@ -53,8 +53,8 @@ computeGridSize <- function(dataset) {
 #' 
 #' @examples
 #' data("risom_dat")
-#' risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' normaliseData(risom_dat[, risom_markers])
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' normaliseData(risom_dat[, risomMarkers])
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -91,8 +91,8 @@ normaliseData <- function(data, markers, method='none', cofactor=5){
 #' 
 #' @examples
 #' data("risom_dat")
-#' risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' normalizeData(risom_dat[, risom_markers])
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' normalizeData(risom_dat[, risomMarkers])
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -126,8 +126,8 @@ normalizeData <- function(data, markers, method='none', cofactor=5){
 #' 
 #' @examples 
 #' data("risom_dat")
-#' risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' generatePrototypes(risom_dat[, risom_markers])
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' generatePrototypes(risom_dat[, risomMarkers])
 #' 
 #' @importFrom yasomi somgrid 
 #' @importFrom yasomi sominit.pca
@@ -150,15 +150,15 @@ generatePrototypes <- function(data, verbose=FALSE){
   sg <- somgrid(xdim=size,ydim=size,topo="hex")
   
   # generate the initial prototypes using the first two pcs
-  init.res <- sominit.pca(as.matrix(data), somgrid = sg)
+  initRes <- sominit.pca(as.matrix(data), somgrid = sg)
   message('Now Running the Self Organizing Map Model')
   
   # generate the self organizing map
-  som_model <- batchsom(as.matrix(data), sg,
-                                prototypes = init.res$prototypes,
+  somModel <- batchsom(as.matrix(data), sg,
+                                prototypes = initRes$prototypes,
                                 verbose = verbose
   )
-  return(som_model)
+  return(somModel)
 }
 
 
@@ -167,14 +167,14 @@ generatePrototypes <- function(data, verbose=FALSE){
 #' Clustering is done using hierarchical clustering with 
 #' the average linkage function
 #' 
-#' @param som_model the self organizing map
+#' @param somModel the self organizing map
 #' @param numClusters the number of clusters to generate
 #' @return the cluster labels
 #' 
 #' @examples  
 #' data("risom_dat")
-#' risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' prototypes <- generatePrototypes(risom_dat[, risom_markers])
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' prototypes <- generatePrototypes(risom_dat[, risomMarkers])
 #' clusters <- clusterPrototypes(prototypes, 23)
 #' 
 #' @importFrom coop tcosine
@@ -182,12 +182,12 @@ generatePrototypes <- function(data, verbose=FALSE){
 #' @importFrom psych cor2dist
 #' @importFrom FCPS HierarchicalClustering
 #' @export
-clusterPrototypes <- function(som_model, numClusters=NULL){
+clusterPrototypes <- function(somModel, numClusters=NULL){
   if(is.null(numClusters)){
     stop('Please provide the number of clusters')
   }
   # get the prototypes
-  prototypes <- som_model$prototypes
+  prototypes <- somModel$prototypes
   message('Now Clustering the Prototypes')
   
   # compute the similarity matrices
@@ -196,18 +196,18 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
   spear <- cor(t(prototypes), method = 'spearman')
     
   # peform multiview integration
-  fianl_dist <- as.matrix(fuse(cor2dist(pear),cor2dist(cosi),cor2dist(spear)))
+  finalDist <- as.matrix(fuse(cor2dist(pear),cor2dist(cosi),cor2dist(spear)))
     
   # cluster the final 
-  clusters <- HierarchicalClustering(fianl_dist, ClusterNo = numClusters,
+  clusters <- HierarchicalClustering(finalDist, ClusterNo = numClusters,
                                       Type = 'AverageL')$Cls
   message('Now Mapping Clusters to the Original Data')
   
-  cluster_assignment <- clusters[som_model$classif]
-  cluster_assignment <- paste0('cluster_', cluster_assignment)
+  clusterAssignment <- clusters[somModel$classif]
+  clusterAssignment <- paste0('cluster_', clusterAssignment)
   
   message('The Prototypes have been Clustered and Mapped Successfully')
-  return(cluster_assignment)
+  return(clusterAssignment)
 }
 
 
@@ -229,8 +229,8 @@ clusterPrototypes <- function(som_model, numClusters=NULL){
 #' 
 #' @examples 
 #' data("risom_dat")
-#' risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' res <- runFuseSOM(risom_dat, markers=risom_markers, numClusters=23)
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23)
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -251,14 +251,14 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
     message(paste("You have provided a dataset of class", class(data)[[1]]))
     # if no markers are given, make sure all the columns are numeric
     if(is.null(markers)){
-      num_numeric  <- sum(apply(data, 2, function(x) is.numeric(x)))
-      if(num_numeric != ncol(data)){
+      numNumeric  <- sum(apply(data, 2, function(x) is.numeric(x)))
+      if(numNumeric != ncol(data)){
         stop("If markers of interest are not provided, make sure the data contains all numeric columns")
       }
-      data_new <- data
+      dataNew <- data
     }else{
       # extract the markers of interest
-      data_new <- data[, markers]
+      dataNew <- data[, markers]
     }
   } else if(is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")){ # if we have a single cell experiment object
     flag = TRUE
@@ -268,17 +268,17 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
     if(is.null(assay)){
       stop(paste("If a",class(data)[[1]],"make sure the appropriate assay is provided as well"))
     }
-    data_new <- t(assay(data, assay))
+    dataNew <- t(assay(data, assay))
     
     # again if no markers are given, make sure all the columns are numeric
     if(is.null(markers)){
-      num_numeric  <- sum(apply(data_new, 2, function(x) is.numeric(x)))
-      if(num_numeric != ncol(data_new)){
+      numNumeric  <- sum(apply(dataNew, 2, function(x) is.numeric(x)))
+      if(numNumeric != ncol(dataNew)){
         stop("If markers of interest are not provided, make sure the data contains all numeric columns")
       } 
     }else{
       # extract the markers of interest
-      data_new <- data_new[, markers]
+      dataNew <- dataNew[, markers]
     }
     
     
@@ -286,14 +286,14 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
     if(!is.null(metadata(data)$SOM)){
       message("The prototypes have already been generated. Checking to see if the current markes were used to generate the prototypes")
       # check to see if the same markers were used to generate the previous SOM
-      old_som <- metadata(data)$SOM
-      old_markers <- colnames(old_som$prototypes)
+      oldSom <- metadata(data)$SOM
+      oldMarkers <- colnames(oldSom$prototypes)
       
       # if no markers were provided
       if(is.null(markers)){
-        if(identical(old_markers,colnames(data_new))){
+        if(identical(oldMarkers,colnames(dataNew))){
           message('The same markers were used to generate the prototypes. Will proceed to clustering the prototypes')
-          clusters <- clusterPrototypes(old_som, numClusters = numClusters)
+          clusters <- clusterPrototypes(oldSom, numClusters = numClusters)
           colData(data)$clusters <- clusters
           # update the cluster name
           names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
@@ -304,9 +304,9 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
         
         # markers were provided
       } else{
-        if(identical(old_markers,markers)){
+        if(identical(oldMarkers,markers)){
           message('The same markers were used to generate the prototypes. Will proceed to clustering the prototypes')
-          clusters <- clusterPrototypes(old_som, numClusters = numClusters)
+          clusters <- clusterPrototypes(oldSom, numClusters = numClusters)
           colData(data)$clusters <- clusters
           # update the cluster name
           names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
@@ -326,9 +326,9 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
   
   # now we can run the FuseSOM algorithm
   message("Everything looks good. Now running the FuseSOM algorithm")
-  data_new <- apply(data_new, 2, function(x) as.numeric(x))
-  som_model <- generatePrototypes(data_new, verbose=verbose)
-  clusters <- clusterPrototypes(som_model, numClusters = numClusters)
+  dataNew <- apply(dataNew, 2, function(x) as.numeric(x))
+  somModel <- generatePrototypes(dataNew, verbose=verbose)
+  clusters <- clusterPrototypes(somModel, numClusters = numClusters)
   
   message("The FuseSOM algorithm has completed successfully")
   
@@ -336,10 +336,10 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
     colData(data)$clusters <- clusters
     # update the cluster name
     names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
-    metadata(data) <- append(metadata(data), list(SOM=som_model))
+    metadata(data) <- append(metadata(data), list(SOM=somModel))
     return(data)
   }else{
-    return(list(model=som_model, clusters=clusters))
+    return(list(model=somModel, clusters=clusters))
   }
   
   
@@ -354,7 +354,7 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
 #' @param data the Self Organizing Map object generated by generatePrototypes(), or
 #' an object of class SingleCellExperiment or SpatialExperiment
 #' @param method one of Discriminant, Distance, Stability. By default, everything is run
-#' @param kseq a sequence of the number of clusters to try. Default is 2:20 clusters
+#' @param kSeq a sequence of the number of clusters to try. Default is 2:20 clusters
 #' @return A list containing the cluster estimations if a dataframe 
 #' or matrix is provided
 #' @return A SingleCellExperiment object with the cluster estimation in the metadata 
@@ -362,9 +362,9 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
 #' 
 #' @examples  
 #' data("risom_dat")
-#' risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' res <- runFuseSOM(risom_dat, markers=risom_markers, numClusters=23)
-#' res.est.k <- estimateNumCluster(res$model, kseq=2:25)
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23)
+#' res.est.k <- estimateNumCluster(res$model, kSeq=2:25)
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -376,11 +376,11 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
 #' 
 estimateNumCluster <- function(data, 
                       method = c('Discriminant','Distance', 'Stability'),
-                      kseq = 2:20 
+                      kSeq = 2:20 
 )
 {
   
-  if(1 %in% kseq) stop('Please select a k sequence starting with 2: {2,3,...K}!')
+  if(1 %in% kSeq) stop('Please select a k sequence starting with 2: {2,3,...K}!')
   
   flag = FALSE
   
@@ -388,21 +388,21 @@ estimateNumCluster <- function(data,
   if(is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")){
     flag = TRUE
     message(paste("You have provided a dataset of class:", class(data)[[1]]))
-    som_model <- data@metadata$SOM
+    somModel <- data@metadata$SOM
     
   } else{ # if we just have the som model
-    som_model <- data
+    somModel <- data
   }
   
   # extract the prototypes from the model
-  prototypes <- som_model$prototypes
+  prototypes <- somModel$prototypes
   
-  k_discr <- NULL
+  kDiscr <- NULL
   if('Discriminant' %in% method){
     
     message('Now Computing the Number of Clusters using Discriminant Analysis')
     # the minimum number of clusters
-    nmin <- 10
+    nMin <- 10
     
     # compute the similarity matrices
     pear <- cor(t(prototypes), method='pearson')
@@ -410,47 +410,47 @@ estimateNumCluster <- function(data,
     spear <- cor(t(prototypes), method='spearman')
     
     # Get the multiview integration
-    final_dist <- as.matrix(fuse(cor2dist(pear),cor2dist(cosi),cor2dist(spear)))
+    finalDist <- as.matrix(fuse(cor2dist(pear),cor2dist(cosi),cor2dist(spear)))
     
     # estimate the number of clusters uisng discriminant analysis
-    k_discr = .runDiscriminant(final_dist,nmin)
+    kDiscr = .runDiscriminant(finalDist,nMin)
   }
   
   # compute the number of clusters using distance methods
-  k_dist <- NULL
+  kDist <- NULL
   if('Distance' %in% method){
     message('Now Computing The Number Of Clusters Using Distance Analysis')
     
     # get the distances
-    k_dist <- .cDistance(prototypes, kseq = kseq)
+    kDist <- .cDistance(prototypes, kSeq = kSeq)
     
     # compute the optimal k values using the elbow method
-    k_dist$k_Gap <- .computeElbow(k_dist$Gaps)
-    k_dist$k_Slope <- .computeElbow(k_dist$Slopes)
-    k_dist$k_Jump <- .computeElbow(k_dist$Jumps)
-    k_dist$k_WCD <- .computeElbow(k_dist$WCD)
-    k_dist$k_Sil <- .computeElbow(k_dist$Silhouettes)
+    kDist$kGap <- .computeElbow(kDist$Gaps)
+    kDist$kSlope <- .computeElbow(kDist$Slopes)
+    kDist$kJump <- .computeElbow(kDist$Jumps)
+    kDist$kWCD <- .computeElbow(kDist$WCD)
+    kDist$kSil <- .computeElbow(kDist$Silhouettes)
   }
   
   # compute the number of clusters using the instability metric
-  k_stab <- NULL
+  kStab <- NULL
   if('Stability' %in% method){
     message('Now Computing The Number Of Clusters Using Stability Analysis')
     
     # run the stability algorithm
-    k_stab <- .cStability(prototypes,kseq = kseq, nB = 10)
+    kStab <- .cStability(prototypes,kSeq = kSeq, nB = 10)
   }
   
-  outlist <- list('Discriminant'=k_discr,
-                  'Distance'=k_dist,
-                  'Stability'=k_stab)
+  outList <- list('Discriminant'=kDiscr,
+                  'Distance'=kDist,
+                  'Stability'=kStab)
   
   
   if(flag){
-    metadata(data) <- append(metadata(data), list(clusterEstimation=outlist))
+    metadata(data) <- append(metadata(data), list(clusterEstimation=outList))
     return(data)
   }else{
-    return(outlist)
+    return(outList)
   }
   
 }
@@ -462,16 +462,16 @@ estimateNumCluster <- function(data,
 #' Methods available are: 
 #' Gap, Silhouette, Slope, Jump, and Within Cluster Distance(WCD)
 #' 
-#' @param k_est the estimation list returned by estimateNumcluster()
+#' @param kEst the estimation list returned by estimateNumcluster()
 #' @param method one of 'jump', 'slope', 'wcd', 'gap', or 'silhouette'
 #' @return an elbow plot object where the optimal number of clusters is marked
 #' 
 #' @examples 
 #' data("risom_dat")
-#' risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' res <- runFuseSOM(risom_dat, markers=risom_markers, numClusters=23)
-#' res.est.k <- estimateNumCluster(res$model, kseq=2:25)
-#' p <- optiPlot(res.est.k, method='jump')
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23)
+#' resEstK <- estimateNumCluster(res$model, kSeq=2:25)
+#' p <- optiPlot(resEstK, method='jump')
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -491,44 +491,44 @@ optiPlot <- function(data, method='jump'){
   # if we have a single cell experiment object
   if(is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")){
     message(paste("You have provided a dataset of class:", class(data)[[1]]))
-    k_est <- data@metadata$clusterEstimation
+    kEst <- data@metadata$clusterEstimation
     
   } else { # if we just have the som model
-    k_est <- data
+    kEst <- data
   }
   
   # extract the relevant information for the method provided
   if(method == 'jump'){
     method <- stringr::str_to_title(method)
-    jumps <- k_est$Distance$Jumps
-    plot_data <- data.frame(Clusters=1:length(jumps), Jump=jumps)
-    k_opti <- k_est$Distance$k_Jump
+    jumps <- kEst$Distance$Jumps
+    plotData <- data.frame(Clusters=1:length(jumps), Jump=jumps)
+    kOpti <- kEst$Distance$kJump
   } else if(method == 'slope'){
     method <- stringr::str_to_title(method)
-    slopes <- k_est$Distance$Slopes
-    plot_data <- data.frame(Clusters=1:length(slopes), Slope=slopes)
-    k_opti <- k_est$Distance$k_Slope
+    slopes <- kEst$Distance$Slopes
+    plotData <- data.frame(Clusters=1:length(slopes), Slope=slopes)
+    kOpti <- kEst$Distance$kSlope
   } else if(method == 'wcd'){
     method <- stringr::str_to_upper(method)
-    wcds <- k_est$Distance$WCD
-    plot_data <- data.frame(Clusters=1:length(wcds), WCD=wcds)
-    k_opti <- k_est$Distance$k_WCD
+    wcds <- kEst$Distance$WCD
+    plotData <- data.frame(Clusters=1:length(wcds), WCD=wcds)
+    kOpti <- kEst$Distance$kWCD
   } else if(method == 'gap'){
     method <- stringr::str_to_title(method)
-    gaps <- k_est$Distance$Gaps
-    plot_data <- data.frame(Clusters=1:length(gaps), Gap=gaps)
-    k_opti <- k_est$Distance$k_Gap
+    gaps <- kEst$Distance$Gaps
+    plotData <- data.frame(Clusters=1:length(gaps), Gap=gaps)
+    kOpti <- kEst$Distance$kGap
   } else{
     method <- stringr::str_to_title(method)
-    silhouettes <- k_est$Distance$Silhouettes
-    plot_data <- data.frame(Clusters=1:length(silhouettes), 
+    silhouettes <- kEst$Distance$Silhouettes
+    plotData <- data.frame(Clusters=1:length(silhouettes), 
                            Silhouette=silhouettes)
-    k_opti <- k_est$Distance$k_Sil
+    kOpti <- kEst$Distance$kSil
   } 
   
   # plot the data
-  p <- ggpubr::ggline(plot_data, x = "Clusters", y = method, group = 1, color = "steelblue") +
-    geom_vline(xintercept = k_opti, linetype = 2, color = 'steelblue') +
+  pOpti <- ggpubr::ggline(plotData, x = "Clusters", y = method, group = 1, color = "steelblue") +
+    geom_vline(xintercept = kOpti, linetype = 2, color = 'steelblue') +
     labs(y = paste(method,"statistic (k)"), x = "Number of clusters k",
          title = "Optimal number of clusters using the elbow method") +
     theme(
@@ -537,7 +537,7 @@ optiPlot <- function(data, method='jump'){
       axis.title.y = element_text(color="Black", size=14, face="bold")
     )
   
-  return(p)
+  return(pOpti)
   
   
 }
@@ -558,9 +558,9 @@ optiPlot <- function(data, method='jump'){
 #' 
 #' @examples 
 #' data("risom_dat")
-#' risom_markers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' res <- runFuseSOM(risom_dat, markers=risom_markers, numClusters=23)
-#' p.heat <- markerHeatmap(risom_dat, risom_markers, clusters=res$clusters)
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23)
+#' p.heat <- markerHeatmap(risom_dat, risomMarkers, clusters=res$clusters)
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -583,8 +583,8 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL, threshold=2,
   
   # again if no markers are given, make sure all the columns are numeric
   if(is.null(markers)){
-    num_numeric  <- sum(apply(data, 2, function(x) is.numeric(x)))
-    if(num_numeric != ncol(data)){
+    numNumeric  <- sum(apply(data, 2, function(x) is.numeric(x)))
+    if(numNumeric != ncol(data)){
       stop("If markers of interest are not provided, make sure the data contains all numeric columns")
     } 
     message("No markers provided, will be using all columns as markers")
@@ -593,31 +593,31 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL, threshold=2,
   
   features <- data[, markers]
   # do some wrangling to get it in the proper format
-  features_heatmap <- aggregate(.~as.character(clusters),
+  featuresHeatmap <- aggregate(.~as.character(clusters),
                                 features[,markers],
                                 mean)
-  rownames(features_heatmap) <- features_heatmap[,1]
-  features_heatmap <- features_heatmap[,-1]
+  rownames(featuresHeatmap) <- featuresHeatmap[,1]
+  featuresHeatmap <- featuresHeatmap[,-1]
   
   # compute the marker expression
-  features_heatmap <- sweep(features_heatmap,2, colMeans(features_heatmap), "-")
-  features_heatmap <- sweep(features_heatmap,2, apply(features_heatmap,2,sd), "/")
-  features_heatmap[features_heatmap>threshold] <- threshold
-  features_heatmap[features_heatmap< -threshold] <- -threshold
+  featuresHeatmap <- sweep(featuresHeatmap,2, colMeans(featuresHeatmap), "-")
+  featuresHeatmap <- sweep(featuresHeatmap,2, apply(featuresHeatmap,2,sd), "/")
+  featuresHeatmap[featuresHeatmap>threshold] <- threshold
+  featuresHeatmap[featuresHeatmap< -threshold] <- -threshold
   
   # compute the heatmap annotations
-  annotation_row = data.frame(Clusters = rownames(features_heatmap))
+  annotationRow = data.frame(Clusters = rownames(featuresHeatmap))
   
-  rn <- rownames(features_heatmap)
-  features_heatmap <- as.matrix(features_heatmap)
-  rownames(features_heatmap) <- rn
-  rownames(annotation_row) <- rownames(features_heatmap)
+  rn <- rownames(featuresHeatmap)
+  featuresHeatmap <- as.matrix(featuresHeatmap)
+  rownames(featuresHeatmap) <- rn
+  rownames(annotationRow) <- rownames(featuresHeatmap)
   
-  gaps_row <- which(!duplicated(substr(rownames(features_heatmap),1,2)))[-1]-1
+  gapRows <- which(!duplicated(substr(rownames(featuresHeatmap),1,2)))[-1]-1
   
-  p <- ggplotify::as.ggplot(pheatmap(features_heatmap, gaps_row = gaps_row, 
-                                     annotation_row = annotation_row, annotation_legend = FALSE, 
+  pHeat <- ggplotify::as.ggplot(pheatmap(featuresHeatmap, gaps_row = gapRows, 
+                                     annotation_row = annotationRow, annotation_legend = FALSE, 
                                      cluster_cols = clusterMarkers, cluster_rows = FALSE, 
                                      fontsize = fontSize))
-  return(p)
+  return(pHeat)
 }

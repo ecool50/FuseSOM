@@ -13,26 +13,26 @@
   cosi <- coop::tcosine(data)
   spear <- stats::cor(t(data), method = 'spearman')
   
-  dmat <- as.matrix(fuse(cor2dist(pear),cor2dist(cosi),cor2dist(spear)))
+  dMat <- as.matrix(fuse(cor2dist(pear),cor2dist(cosi),cor2dist(spear)))
   
-  hcobj <- fastcluster::hclust(stats::as.dist(dmat), method = linkage)
-  cl <- stats::cutree(hcobj, k)
+  hcObj <- fastcluster::hclust(stats::as.dist(dMat), method = linkage)
+  cl <- stats::cutree(hcObj, k)
   
   # ------ WITHIN CLUSTER DISSIMILARITY
   
   # calc within cluster dissimilarity
   WCD = NULL
   if('wcd' %in% measures){
-    norm_diss <- c()
-    for(i in 1:k) norm_diss[i] <- sum(dmat[cl==i, cl==i]) / (2 * sum(cl == i))
-    WCD <- sum(norm_diss)
+    normDiss <- c()
+    for(i in 1:k) normDiss[i] <- sum(dMat[cl==i, cl==i]) / (2 * sum(cl == i))
+    WCD <- sum(normDiss)
   }
   
   
   # ------ SILHOUETTE
   
   Sil <- NULL
-  if('sil' %in% measures) if(k > 1) Sil <- mean(cluster::silhouette(cl, stats::as.dist(dmat))[,3]) else Sil <- 0
+  if('sil' %in% measures) if(k > 1) Sil <- mean(cluster::silhouette(cl, stats::as.dist(dMat))[,3]) else Sil <- 0
   
   # ------ CLUSTER CENTERS
   
@@ -41,11 +41,11 @@
   if('mse' %in% measures | 'centers' %in% measures){
     if(k == 1)  centers <- colMeans(data)
     if(k > 1) {
-        data_or <- as.data.frame(data)
-        data_or$cl <- cl
-        data_or <- data_or[order(data_or$cl),]
+        dataOr <- as.data.frame(data)
+        dataOr$cl <- cl
+        dataOr <- dataOr[order(dataOr$cl),]
         centers <- matrix(NA, k, ncol(data))
-        for(kk in 1:k) centers[kk,] <- colMeans(data_or[data_or$cl==kk, -(ncol(data)+1)])
+        for(kk in 1:k) centers[kk,] <- colMeans(dataOr[dataOr$cl==kk, -(ncol(data)+1)])
       }
     }
   # ------ MSE FOR JUMP

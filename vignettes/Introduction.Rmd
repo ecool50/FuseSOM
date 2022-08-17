@@ -113,7 +113,7 @@ We can estimate the number of clusters using the `estimateNumCluster`. Run `help
 # lets estimate the number of clusters using all the methods
 # original clustering has 23 clusters so we will set kseq from 2:25
 # we pass it the som model generated in the previous step
-risomKest <- estimateNumCluster(data = risomRes$model, kseq = 2:25, 
+risomKest <- estimateNumCluster(data = risomRes$model, kSeq = 2:25, 
                                   method = c("Discriminant", "Distance", "Stability"))
 
 ```
@@ -126,7 +126,7 @@ risomKest$Discriminant
 
 # what is the best number of clusters determined by the instability method?
 # optimal number of clusters according to the instability method is 5
-risomKest$Stability$k_instab_norm
+risomKest$Stability$kInstabNorm
 
 # we can plot the results using the optiplot function
 pSlope <- optiPlot(risomKest, method = 'slope')
@@ -187,7 +187,7 @@ Just like before, we can estimate the number of clusters
 # now we pass it a singlecellexperiment object instead of the som model as before
 # this will return a singelcellexperiment object where the metatdata contains the
 # cluster estimation information
-risomRessce <- estimateNumCluster(data = risomRessce, kseq = 2:25, 
+risomRessce <- estimateNumCluster(data = risomRessce, kSeq = 2:25, 
                                   method = c("Discriminant", "Distance", "Stability"))
 
 names(metadata(risomRessce))
@@ -202,7 +202,7 @@ metadata(risomRessce)$clusterEstimation$Discriminant
 
 # what is the best number of clusters determined by the instability method?
 # optimal number of clusters according to the instability method is 5
-metadata(risomRessce)$clusterEstimation$Stability$k_instab_norm
+metadata(risomRessce)$clusterEstimation$Stability$kInstabNorm
 
 # we can plot the results using the optiplot function
 pSlope <- optiPlot(risomRessce, method = 'slope')
