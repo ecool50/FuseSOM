@@ -19,8 +19,6 @@ Installation
 ```r
 # Install the development version from GitHub:
 # install.packages("devtools")
-# you will need the yasomi package for the Self Orgnanizing map
-install.packages("yasomi", repos="http://R-Forge.R-project.org")
 devtools::install_github("https://github.com/ecool50/FuseSOM")
 library(FuseSOM)
 ```
