@@ -129,9 +129,6 @@ normalizeData <- function(data, markers, method='none', cofactor=5){
 #' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
 #' generatePrototypes(risom_dat[, risomMarkers])
 #' 
-#' @importFrom yasomi somgrid 
-#' @importFrom yasomi sominit.pca
-#' @importFrom yasomi batchsom
 #' @export
 generatePrototypes <- function(data, verbose=FALSE){
   
@@ -143,18 +140,18 @@ generatePrototypes <- function(data, verbose=FALSE){
   if(size*size < 25){
     size <- 5
   } else{
-    size <- size + 2
+    size <- size
   }
   
   # genearte the som grid based on the computed grid size
-  sg <- somgrid(xdim=size,ydim=size,topo="hex")
+  sg <- somGrid(xDim=size,yDim=size)
   
   # generate the initial prototypes using the first two pcs
-  initRes <- sominit.pca(as.matrix(data), somgrid = sg)
+  initRes <- somInitPca(as.matrix(data), somGrid = sg)
   message('Now Running the Self Organizing Map Model')
   
   # generate the self organizing map
-  somModel <- batchsom(as.matrix(data), sg,
+  somModel <- batchSom(as.matrix(data), sg,
                                 prototypes = initRes$prototypes,
                                 verbose = verbose
   )
@@ -375,7 +372,7 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
 #' @export
 #' 
 estimateNumCluster <- function(data, 
-                      method = c('Discriminant','Distance', 'Stability'),
+                      method = c('Discriminant','Distance'),
                       kSeq = 2:20 
 )
 {
@@ -432,18 +429,8 @@ estimateNumCluster <- function(data,
     kDist$kSil <- .computeElbow(kDist$Silhouettes)
   }
   
-  # compute the number of clusters using the instability metric
-  kStab <- NULL
-  if('Stability' %in% method){
-    message('Now Computing The Number Of Clusters Using Stability Analysis')
-    
-    # run the stability algorithm
-    kStab <- .cStability(prototypes,kSeq = kSeq, nB = 10)
-  }
-  
   outList <- list('Discriminant'=kDiscr,
-                  'Distance'=kDist,
-                  'Stability'=kStab)
+                  'Distance'=kDist)
   
   
   if(flag){
@@ -620,4 +607,38 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL, threshold=2,
                                      cluster_cols = clusterMarkers, cluster_rows = FALSE, 
                                      fontsize = fontSize))
   return(pHeat)
+}
+
+
+#' A function for plotting the self organizing map
+#' function was obtained from https://rdrr.io/rforge/yasomi/ with some minor modifications
+#' 
+#' @param som the self organizing map 
+#' @param border a value for the plot border
+#' @param withGrid option to add the som grid
+#' @return None
+#' @examples 
+#' data("risom_dat")
+#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+#' prototypes <- generatePrototypes(risom_dat[, risomMarkers])
+#' plotSOM(prototypes)
+#' 
+#' @author
+#'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
+#' @export
+#' 
+plotSOM <- function(som,border=NA,withGrid=TRUE,...) {
+  args <- list(...)
+  if(is.null(args$col)) {
+    args$col <- "red"
+  }
+  if(withGrid) {
+    add <- !is.null(args$add) && args$add
+    plot(som$somGrid,add=add)
+    args$add <- TRUE
+  }
+  args$border <- border
+  sizes <- table(factor(som$classif,levels=1:nrow(som$prototypes)))
+  sizes <- sizes/max(sizes)
+  do.call("plot",c(list(x=som$somGrid,size=sizes),args))
 }

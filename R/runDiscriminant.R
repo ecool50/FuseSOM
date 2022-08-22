@@ -2,7 +2,7 @@
 # function to estimate the number of clusters using discriminant analysis
 # parts of this function is based on the sigclust2 package by Patrick Kimes
 # see https://github.com/pkimes/sigclust2
-.runDiscriminant <- function(distMat, minClusterSize, alpha=0.001){
+.runDiscriminant <- function(distMat, minClusterSize, alpha=0.05){
   
   # do some house keeping
   n <- nrow(distMat)
