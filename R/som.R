@@ -192,7 +192,7 @@ batchSomLowLevelContinuous <- function(somGrid,data,prototypes,weights,
                as.integer(verbose),
                clusters=integer(nrow(data)),
                errors=as.double(rep(-1,1+length(control$radii))),
-               PACKAGE="yasomi")
+               PACKAGE="FuseSOM")
   prototypes <- matrix(result$proto,ncol=ncol(prototypes),
                        dimnames=list(NULL,dimnames(data)[[2]]))
   res <- list(somGrid=somGrid,

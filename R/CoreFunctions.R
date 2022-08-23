@@ -174,7 +174,7 @@ generatePrototypes <- function(data, verbose=FALSE){
 #' prototypes <- generatePrototypes(risom_dat[, risomMarkers])
 #' clusters <- clusterPrototypes(prototypes, 23)
 #' 
-#' @importFrom trqwe cosineDist
+#' @importFrom coop tcosine
 #' @importFrom analogue fuse
 #' @importFrom psych cor2dist
 #' @importFrom FCPS HierarchicalClustering
@@ -189,11 +189,11 @@ clusterPrototypes <- function(somModel, numClusters=NULL){
   
   # compute the similarity matrices
   pear <- cor(t(prototypes), method = 'pearson')
-  cosi <- cosineDist(prototypes)
+  cosi <- tcosine(prototypes)
   spear <- cor(t(prototypes), method = 'spearman')
     
   # peform multiview integration
-  finalDist <- as.matrix(fuse(cor2dist(pear),cosi,cor2dist(spear)))
+  finalDist <- as.matrix(fuse(cor2dist(pear),cor2dist(cosi),cor2dist(spear)))
     
   # cluster the final 
   clusters <- HierarchicalClustering(finalDist, ClusterNo = numClusters,
@@ -365,7 +365,7 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
-#' @importFrom trqwe cosineDist
+#' @importFrom coop tcosine
 #' @importFrom analogue fuse
 #' @importFrom psych cor2dist
 #' @importFrom FCPS HierarchicalClustering
@@ -403,11 +403,11 @@ estimateNumCluster <- function(data,
     
     # compute the similarity matrices
     pear <- cor(t(prototypes), method='pearson')
-    cosi <- cosineDist(prototypes)
+    cosi <- tcosine(prototypes)
     spear <- cor(t(prototypes), method='spearman')
     
     # Get the multiview integration
-    finalDist <- as.matrix(fuse(cor2dist(pear),cosi,cor2dist(spear)))
+    finalDist <- as.matrix(fuse(cor2dist(pear),cor2dist(cosi),cor2dist(spear)))
     
     # estimate the number of clusters uisng discriminant analysis
     kDiscr = .runDiscriminant(finalDist,nMin)
