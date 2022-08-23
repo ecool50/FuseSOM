@@ -1,29 +1,29 @@
-# Definition for generic functions that computes the self organizing maps
-# function was obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
 
-somInitPca <- function(data,somGrid,...) {
+
+somInitPca <- function(data,somgrid,...) {
   UseMethod("somInitPca")
 }
 
-batchSom <- function(data,somGrid,init="pca",prototypes,weights,
-                     mode="continuous",
+batchSom <- function(data,somGrid,init=c("pca"),prototypes,weights,
+                     mode = c("continuous","stepwise"),
                      minRadius, maxRadius, steps,
-                     decrease="power", maxIter,
-                     kernel="gaussian", normalised,
-                     assignment="single",
-                     cut=1e-07,
+                     decrease = c("power", "linear"), maxIter,
+                     kernel = c("gaussian", "linear"), normalised,
+                     assignment = c("single", "heskes"),
+                     cut = 1e-07,
                      verbose=FALSE,keepdata=TRUE,...) {
   UseMethod("batchSom")
 }
 
 ## in annealing.R
 
-batchSomControl <- function(data,somGrid,
-                             mode="continuous",
+batchSom.control <- function(data,somGrid,
+                             mode = c("continuous","stepwise"),
                              minRadius, maxRadius, steps,
-                             decrease="power", maxIter,
-                             kernel="gaussian",
-                             assignment="single",
+                             decrease = c("power", "linear"), maxIter,
+                             kernel = c("gaussian", "linear"),
+                             normalised,
+                             assignment = c("single", "heskes"),
                              cut = 1e-07,...) {
-  UseMethod("batchSomControl")
+  UseMethod("batchSom.control")
 }
