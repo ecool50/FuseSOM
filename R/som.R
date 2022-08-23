@@ -91,9 +91,6 @@ batchSom.default <- function(data,somGrid,init=c("pca","random"),prototypes,
                              assignment = c("single", "heskes"),
                              cut = 1e-07,
                              verbose=FALSE,keepdata=TRUE,...) {
-  if(class(somGrid)!="somgrid") {
-    stop("'somgrid' is not of somgrid class")
-  }
   the.call <- match.call()
   if(verbose) {
     print(the.call)
