@@ -144,7 +144,7 @@ generatePrototypes <- function(data, verbose=FALSE){
   }
   
   # genearte the som grid based on the computed grid size
-  sg <- somGrid(xDim=size,yDim=size)
+  sg <- somGrid(xDim=size,yDim=size, topo = 'hexagonal')
   
   # generate the initial prototypes using the first two pcs
   initRes <- somInitPca(as.matrix(data), somGrid = sg)
