@@ -399,7 +399,7 @@ estimateNumCluster <- function(data,
     
     message('Now Computing the Number of Clusters using Discriminant Analysis')
     # the minimum number of clusters
-    nMin <- min(5,floor(0.10*nrow(prototypes)))
+    nMin <- 10
     
     # compute the similarity matrices
     pear <- cor(t(prototypes), method='pearson')
