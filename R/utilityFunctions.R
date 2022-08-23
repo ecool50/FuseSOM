@@ -26,14 +26,6 @@
   return(x)
 }
 
-# this function was obtained from the Stab package
-.instabLookup = function(x,y){
-  lkup <- lookup()
-  a = stabExp(x,lkup)
-  b = stabExp(y,lkup)
-  return(a * (1-b) + (1-a) * b)
-}
-
 # Creates uniformly distributed data of same dimensionality as input data
 # this function was obtained from the Stab package
 .uniformData <- function(data) {

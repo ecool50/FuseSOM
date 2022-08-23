@@ -399,7 +399,7 @@ estimateNumCluster <- function(data,
     
     message('Now Computing the Number of Clusters using Discriminant Analysis')
     # the minimum number of clusters
-    nMin <- 10
+    nMin <- min(5,floor(0.10*nrow(prototypes)))
     
     # compute the similarity matrices
     pear <- cor(t(prototypes), method='pearson')
@@ -607,38 +607,4 @@ markerHeatmap <- function(data, markers=NULL, clusters=NULL, threshold=2,
                                      cluster_cols = clusterMarkers, cluster_rows = FALSE, 
                                      fontsize = fontSize))
   return(pHeat)
-}
-
-
-#' A function for plotting the self organizing map
-#' function was obtained from https://rdrr.io/rforge/yasomi/ with some minor modifications
-#' 
-#' @param som the self organizing map 
-#' @param border a value for the plot border
-#' @param withGrid option to add the som grid
-#' @return None
-#' @examples 
-#' data("risom_dat")
-#' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' prototypes <- generatePrototypes(risom_dat[, risomMarkers])
-#' plotSOM(prototypes)
-#' 
-#' @author
-#'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
-#' @export
-#' 
-plotSOM <- function(som,border=NA,withGrid=TRUE,...) {
-  args <- list(...)
-  if(is.null(args$col)) {
-    args$col <- "red"
-  }
-  if(withGrid) {
-    add <- !is.null(args$add) && args$add
-    plot(som$somGrid,add=add)
-    args$add <- TRUE
-  }
-  args$border <- border
-  sizes <- table(factor(som$classif,levels=1:nrow(som$prototypes)))
-  sizes <- sizes/max(sizes)
-  do.call("plot",c(list(x=som$somGrid,size=sizes),args))
 }
