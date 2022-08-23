@@ -82,36 +82,6 @@ secondBmu <- function(prototypes,data) {
             PACKAGE="FuseSOM")$clusters,ncol=2)
 }
 
-bmuHeskes <- function(prototypes,data,nv,weights) {
-  if(ncol(prototypes)!=ncol(data)) {
-    stop("'prototypes' and 'data' have different dimensions")
-  }
-  if(ncol(nv)!=nrow(nv)) {
-    stop("'nv' is not a square matrix")
-  }
-  if(ncol(nv)!=nrow(prototypes)) {
-    stop("'nv' and 'prototypes' have different dimensions")
-  }
-  if(missing(weights)) {
-    weights <- rep(1,nrow(data))
-  } else if(length(weights)!=nrow(data)) {
-    stop("'weights' and 'data' have different dimensions")
-  }
-  ## nv must be in row major mode if normalised
-  result <- .C("bmu_heskes",
-               as.double(prototypes),
-               as.double(t(nv)),
-               as.integer(nrow(prototypes)),
-               as.double(data),
-               as.integer(nrow(data)),
-               as.integer(ncol(prototypes)),
-               as.double(weights),
-               clusters=integer(nrow(data)),
-               error=as.double(0),
-               PACKAGE="FuseSOM")
-  list(clusters=result$clusters+1,error=result$error)
-}
-
 batchSom.default <- function(data,somGrid,init=c("pca","random"),prototypes,
                              weights,
                              mode = c("continuous","stepwise"),
