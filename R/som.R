@@ -98,7 +98,7 @@ batchSom.default <- function(data,somGrid,init=c("pca","random"),prototypes,
   if(verbose) {
     print(the.call)
   }
-  the.call[[1]] <- batchSom.control
+  the.call[[1]] <- batchSomControl
   control <- eval(the.call,envir = parent.frame())
   control$assignmentInt <- switch(control$assignment,"single"=0,"heskes"=1)
   control$kernelInt <- switch(control$kernel,"gaussian"=0,"linear"=1)
@@ -134,9 +134,9 @@ batchSom.default <- function(data,somGrid,init=c("pca","random"),prototypes,
     somGrid$dist <- as.matrix(dist(somGrid$pts,method="Euclidean"),diag=0)
   }
   pre <- switch(control$mode,
-                "stepwise"=batchsom.lowlevel(somGrid,data,prototypes,weights,
+                "stepwise"=batchSomLowLevel(somGrid,data,prototypes,weights,
                                              control,verbose),
-                "continuous"=batchsom.lowlevelcontinuous(somGrid,data,
+                "continuous"=batchSomLowLevelContinuous(somGrid,data,
                                                          prototypes,weights,control,verbose))
   pre$control <- control
   if(keepdata) {
@@ -176,7 +176,7 @@ batchSomLowLevel <- function(somGrid,data,prototypes,weights,control,verbose) {
   res
 }
 
-batchSomLowLeveLcontinuous <- function(somGrid,data,prototypes,weights,
+batchSomLowLevelContinuous <- function(somGrid,data,prototypes,weights,
                                         control,verbose) {
   result <- .C("batch_som_optim_continuous",
                proto=as.double(prototypes),

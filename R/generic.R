@@ -17,7 +17,7 @@ batchSom <- function(data,somGrid,init=c("pca"),prototypes,weights,
 
 ## in annealing.R
 
-batchSom.control <- function(data,somGrid,
+batchSomControl <- function(data,somGrid,
                              mode = c("continuous","stepwise"),
                              minRadius, maxRadius, steps,
                              decrease = c("power", "linear"), maxIter,
@@ -25,5 +25,5 @@ batchSom.control <- function(data,somGrid,
                              normalised,
                              assignment = c("single", "heskes"),
                              cut = 1e-07,...) {
-  UseMethod("batchSom.control")
+  UseMethod("batchSomControl")
 }
