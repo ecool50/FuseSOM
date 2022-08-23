@@ -1,3 +1,5 @@
+# these functions were obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
+
 somInitPca.default <- function(data,somGrid,weights,with.princomp=FALSE,...) {
   ### FIXME: data weights support
   ## we don't scale the data
