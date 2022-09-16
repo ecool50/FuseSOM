@@ -6,7 +6,7 @@
 A self organizing map of the marker intensities is generated using the Yasomi package
 The grid size is determined automatically}
 \usage{
-generatePrototypes(data, verbose = FALSE)
+generatePrototypes(data, verbose = FALSE, size = NULL)
 }
 \arguments{
 \item{data}{the marker intensities}

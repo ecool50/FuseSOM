@@ -11,6 +11,7 @@ runFuseSOM(
   numClusters = NULL,
   assay = NULL,
   clusterCol = "clusters",
+  size = NULL,
   verbose = FALSE
 )
 }
@@ -23,6 +24,8 @@ For matrices and dataframes, it is assumed that markers are the columns and samp
 \item{assay}{the assay of interest if SingleCellExperiment object is used}
 
 \item{clusterCol}{the name of the column to store the clusters in}
+
+\item{size}{the size of the square grid. eg for a 10X10 grid, size = 10}
 
 \item{verbose}{should the generation of the Self Organising Map be printed}
 
@@ -42,7 +45,7 @@ This function accepts a matrix, dataframe or a SingleCellExperiment object
 \examples{
 data("risom_dat")
 risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23)
+res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23, size=8)
 
 }
 \author{

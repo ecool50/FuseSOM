@@ -91,12 +91,12 @@ batchSom.default <- function(data,somGrid,init=c("pca","random"),prototypes,
                              assignment = c("single", "heskes"),
                              cut = 1e-07,
                              verbose=FALSE,keepdata=TRUE,...) {
-  the.call <- match.call()
+  theCall <- match.call()
   if(verbose) {
-    print(the.call)
+    print(theCall)
   }
-  the.call[[1]] <- batchSomControl
-  control <- eval(the.call,envir = parent.frame())
+  theCall[[1]] <- batchSomControl
+  control <- eval(theCall,envir = parent.frame())
   control$assignmentInt <- switch(control$assignment,"single"=0,"heskes"=1)
   control$kernelInt <- switch(control$kernel,"gaussian"=0,"linear"=1)
   if(!missing(weights)) {

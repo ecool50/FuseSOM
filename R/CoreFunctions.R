@@ -130,17 +130,22 @@ normalizeData <- function(data, markers, method='none', cofactor=5){
 #' generatePrototypes(risom_dat[, risomMarkers])
 #' 
 #' @export
-generatePrototypes <- function(data, verbose=FALSE){
+generatePrototypes <- function(data, verbose=FALSE, size=NULL){
   
   message('Now Generating the Self Organizing Map Grid')
-  size <- computeGridSize(data)
-  message(paste('Optimal Grid Size is: ', size))
-  
-  # set a lower bound on the grid size
-  if(size*size < 25){
-    size <- 5
+  if(is.null(size)){
+    size <- computeGridSize(data)
+    
+    # set a lower bound on the grid size
+    if(size*size < 25){
+      size <- 5
+    } else{
+      size <- size
+    }
+    
+    message(paste('Optimal Grid Size is: ', size))
   } else{
-    size <- size
+    message(paste("You have provided a grid size of:", size*size))
   }
   
   # genearte the som grid based on the computed grid size
@@ -217,6 +222,7 @@ clusterPrototypes <- function(somModel, numClusters=NULL){
 #' @param markers the markers of interest. If this is not provided, all columns will be used
 #' @param numCluster the number of clusters to be generated from the data
 #' @param clusterCol the name of the column to store the clusters in
+#' @param size the size of the square grid. eg for a 10X10 grid, size = 10
 #' @param verbose should the generation of the Self Organising Map be printed
 #' 
 #' @return A list containing the SOM model and the cluster labels if a dataframe 
@@ -227,7 +233,7 @@ clusterPrototypes <- function(somModel, numClusters=NULL){
 #' @examples 
 #' data("risom_dat")
 #' risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-#' res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23)
+#' res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23, size=8)
 #' 
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -235,7 +241,7 @@ clusterPrototypes <- function(somModel, numClusters=NULL){
 #' @export
 #' 
 runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
-                       clusterCol='clusters', verbose=FALSE){
+                       clusterCol='clusters', size=NULL, verbose=FALSE){
   
   if(is.null(numClusters)){
     stop("Please provide the number of clusters")
@@ -324,7 +330,7 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
   # now we can run the FuseSOM algorithm
   message("Everything looks good. Now running the FuseSOM algorithm")
   dataNew <- apply(dataNew, 2, function(x) as.numeric(x))
-  somModel <- generatePrototypes(dataNew, verbose=verbose)
+  somModel <- generatePrototypes(dataNew, verbose=verbose, size=size)
   clusters <- clusterPrototypes(somModel, numClusters = numClusters)
   
   message("The FuseSOM algorithm has completed successfully")
