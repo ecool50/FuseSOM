@@ -24,7 +24,8 @@ Imports:
         stringr,
         ggpubr,
         proxy,
-        coop
+        cluster, 
+        diptest
 LazyData: false
 Depends: 
     R (>= 4.1.0)
