@@ -32,7 +32,12 @@
   # ------ SILHOUETTE
   
   Sil <- NULL
-  if('sil' %in% measures) if(k > 1) Sil <- mean(cluster::silhouette(cl, stats::as.dist(dMat))[,3]) else Sil <- 0
+  browser()
+  if('sil' %in% measures) if(k > 1) Sil <- mean(cluster::silhouette(cl, stats::as.dist(dMat))) else Sil <- 0
+
+  # TODO: Touch base with Elijah to ensure I haven't proken anything 
+  # by changing this line.
+  # if('sil' %in% measures) if(k > 1) Sil <- mean(cluster::silhouette(cl, stats::as.dist(dMat))[,3]) else Sil <- 0
   
   # ------ CLUSTER CENTERS
   

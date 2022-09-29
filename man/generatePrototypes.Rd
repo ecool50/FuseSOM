@@ -3,8 +3,8 @@
 \name{generatePrototypes}
 \alias{generatePrototypes}
 \title{Generate a Self Organizing Map and return it's prototypes
-A self organizing map of the marker intensities is generated using the Yasomi package
-The grid size is determined automatically}
+A self organizing map of the marker intensities is generated using the
+Yasomi package.}
 \usage{
 generatePrototypes(data, verbose = FALSE, size = NULL)
 }
@@ -12,13 +12,13 @@ generatePrototypes(data, verbose = FALSE, size = NULL)
 \item{data}{the marker intensities}
 
 \item{verbose}{should the progress be printed out}
+
+\item{size}{The optimal grid size for the Self Organizing Map}
 }
 \value{
 the self organizing map object
 }
 \description{
-Generate a Self Organizing Map and return it's prototypes
-A self organizing map of the marker intensities is generated using the Yasomi package
 The grid size is determined automatically
 }
 \examples{

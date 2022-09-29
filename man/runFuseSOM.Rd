@@ -21,6 +21,8 @@ For matrices and dataframes, it is assumed that markers are the columns and samp
 
 \item{markers}{the markers of interest. If this is not provided, all columns will be used}
 
+\item{numClusters}{the number of clusters to be generated from the data}
+
 \item{assay}{the assay of interest if SingleCellExperiment object is used}
 
 \item{clusterCol}{the name of the column to store the clusters in}
@@ -28,8 +30,6 @@ For matrices and dataframes, it is assumed that markers are the columns and samp
 \item{size}{the size of the square grid. eg for a 10X10 grid, size = 10}
 
 \item{verbose}{should the generation of the Self Organising Map be printed}
-
-\item{numCluster}{the number of clusters to be generated from the data}
 }
 \value{
 A list containing the SOM model and the cluster labels if a dataframe

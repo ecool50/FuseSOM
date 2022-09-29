@@ -1,2 +1,13 @@
-.Rproj.user
 inst/doc
+
+# R junk
+.Rproj.user
+*.Rproj
+.Rhistory
+
+# R CMD build/check outputs
+*.Rcheck
+FuseSOM*.tar.gz
+
+# debugging code
+debug.R 
