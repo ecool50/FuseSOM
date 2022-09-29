@@ -8,6 +8,4 @@ inst/doc
 # R CMD build/check outputs
 *.Rcheck
 FuseSOM*.tar.gz
-
-# debugging code
-debug.R 
+*.BiocCheck
