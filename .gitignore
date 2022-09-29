@@ -9,3 +9,5 @@ inst/doc
 *.Rcheck
 FuseSOM*.tar.gz
 
+# debugging code
+debug.R 
