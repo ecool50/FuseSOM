@@ -27,6 +27,7 @@ Imports:
         cluster, 
         diptest
 LazyData: false
+BuildResaveData: no
 Depends: 
     R (>= 4.1.0)
 Suggests: 
