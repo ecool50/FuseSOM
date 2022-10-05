@@ -8,6 +8,13 @@ see https://github.com/pkimes/sigclust2}
 \usage{
 .runDiscriminant(distMat, minClusterSize, alpha = 0.001)
 }
+\arguments{
+\item{distMat}{A distance matrix}
+
+\item{minClusterSize}{The minimum cluster size}
+
+\item{alpha}{a value between 0 and 1 specifying the desired level of cutoff}
+}
 \description{
 Function to estimate the number of clusters using discriminant analysis
 parts of this function is based on the sigclust2 package by Patrick Kimes

@@ -6,6 +6,11 @@
 \usage{
 .arsinhNnorm(x, cofactor = 5)
 }
+\arguments{
+\item{x}{A numeric or complex vector}
+
+\item{cofactor}{Cofactor of the vector. Default is 5.}
+}
 \description{
 Function to do arsinh normalization
 }

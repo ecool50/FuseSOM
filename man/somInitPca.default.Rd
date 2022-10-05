@@ -6,6 +6,20 @@
 \usage{
 \method{somInitPca}{default}(data, somGrid, weights, with.princomp = FALSE, ...)
 }
+\arguments{
+\item{data}{The data to which the SOM will be fitted, a matrix or data frame
+of observations (which should be scaled)}
+
+\item{somGrid}{A \code{somgrid} object}
+
+\item{weights}{Optional weights for the data points}
+
+\item{with.princomp}{Switch specifying whether the princomp should be used
+instead of the prcomp for computing the principal
+components when no weights are given (see details)}
+
+\item{...}{not used}
+}
 \description{
 these functions were obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
 }

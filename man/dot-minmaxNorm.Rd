@@ -6,6 +6,9 @@
 \usage{
 .minmaxNorm(x)
 }
+\arguments{
+\item{x}{Matrix to min max nomalize.}
+}
 \description{
 Function to do min max normalization
 }

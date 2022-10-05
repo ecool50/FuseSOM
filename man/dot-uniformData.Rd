@@ -7,6 +7,9 @@ this function was obtained from the Stab package}
 \usage{
 .uniformData(data)
 }
+\arguments{
+\item{data}{A data matrix.}
+}
 \description{
 Creates uniformly distributed data of same dimensionality as input data
 this function was obtained from the Stab package

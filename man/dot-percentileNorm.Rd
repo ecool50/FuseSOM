@@ -6,6 +6,9 @@
 \usage{
 .percentileNorm(x)
 }
+\arguments{
+\item{x}{Matrix to percentile normilse.}
+}
 \description{
 Function to do percentile normalizaton
 }

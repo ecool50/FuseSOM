@@ -6,6 +6,9 @@
 \usage{
 .computeElbow(vals)
 }
+\arguments{
+\item{vals}{Values to compute the elbow point of.}
+}
 \description{
 A function to compute the elbow point given a set of points
 }
