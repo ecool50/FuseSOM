@@ -8,6 +8,9 @@
 #'                      instead of the prcomp for computing the principal
 #'                      components when no weights are given (see details)
 #' @param ... not used
+#' @return A list containing: `prototype`, a matrix containing appropriate
+#'         initial prototypes, and `data.pca` the results of the PCA conducted
+#'         on the data
 #'
 #' @importFrom stats princomp prcomp cov.wt
 somInitPca.default <- function(data, somGrid, weights, with.princomp = FALSE, ...) {

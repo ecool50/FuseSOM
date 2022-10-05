@@ -2,6 +2,8 @@
 #' Function to do percentile normalizaton
 #'
 #' @param x Matrix to percentile normilse.
+#' @return percentile normalized version of `x`
+#'
 #' @importFrom stats quantile
 .percentileNorm <- function(x) {
   x <- as.matrix(x)
@@ -15,8 +17,10 @@
 
 #' Function to do min max normalization
 #'
-#' @param x Matrix to min max nomalize.
 #' @importFrom stats quantile
+#'
+#' @param x Matrix to min max nomalize.
+#' @return Max normalized version of `x`
 .minmaxNorm <- function(x) {
   x <- as.matrix(x)
   percentiles <- quantile(x, probs = c(0.01, 0.99))
@@ -30,6 +34,7 @@
 #'
 #' @param x A numeric or complex vector
 #' @param cofactor Cofactor of the vector. Default is 5.
+#' @return Arsinh normalized vector.
 .arsinhNnorm <- function(x, cofactor = 5) {
   x <- asinh(x / cofactor)
   return(x)
@@ -39,6 +44,7 @@
 #' this function was obtained from the Stab package
 #'
 #' @param data A data matrix.
+#' @return Uniform random noise with `dim(data)`
 .uniformData <- function(data) {
 
   # get dimensions of data
@@ -56,6 +62,7 @@
 #' A function to compute the elbow point given a set of points
 #'
 #' @param vals Values to compute the elbow point of.
+#' @return A integer indicating the elbow point of `vals`.
 .computeElbow <- function(vals) {
   diffs <- diff(vals)
   diffs <- diffs[-1]

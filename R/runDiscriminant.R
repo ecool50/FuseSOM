@@ -6,6 +6,8 @@
 #' @param distMat A distance matrix
 #' @param minClusterSize The minimum cluster size
 #' @param alpha a value between 0 and 1 specifying the desired level of cutoff
+#' @return Optimal number of clusters 
+#'
 #' @importFrom stats kmeans
 .runDiscriminant <- function(distMat, minClusterSize, alpha = 0.001) {
 
