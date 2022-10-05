@@ -287,7 +287,8 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
       dataNew <- data[, markers]
     }
   # if we have a single cell experiment object
-  } else if (is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")) {
+  # if it is SpatialExperiment then is also a  SingleCellExperiment
+  } else if (is(data, "SingleCellExperiment")) {
     flag <- TRUE
     message("You have provided a dataset of class ", class(data)[[1]])
 
