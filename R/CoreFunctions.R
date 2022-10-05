@@ -9,7 +9,9 @@
 #'
 #' @examples
 #' data("risom_dat")
-#' risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+#' risomMarkers <- c(
+#'   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#' )
 #' computeGridSize(risom_dat[, risomMarkers])
 #'
 #' @author
@@ -26,7 +28,8 @@ computeGridSize <- function(dataset) {
   muTW <- (sqrt(n - 1) + sqrt(p))^2
   sigmaTW <- (sqrt(n - 1) + sqrt(p)) * (1 / sqrt(n - 1) + 1 / sqrt(p))^(1 / 3)
   sigmaHatNaive <- t(x) %*% x # x left-multiplied by its transpose
-  bd <- 3.273 * sigmaTW + muTW # 3.2730 is the p=0.001 percentile point for the Tracy-Widom distribution
+  # 3.2730 is the p=0.001 percentile point for the Tracy-Widom distribution
+  bd <- 3.273 * sigmaTW + muTW
 
   # compute eigenvalues and return the amount which falls above the bound
   evals <- eigen(sigmaHatNaive, symmetric = TRUE, only.values = TRUE)$values
@@ -51,7 +54,9 @@ computeGridSize <- function(dataset) {
 #'
 #' @examples
 #' data("risom_dat")
-#' risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+#' risomMarkers <- c(
+#'   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#' )
 #' normaliseData(risom_dat[, risomMarkers])
 #'
 #' @author
@@ -89,7 +94,9 @@ normaliseData <- function(data, markers, method = "none", cofactor = 5) {
 #'
 #' @examples
 #' data("risom_dat")
-#' risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+#' risomMarkers <- c(
+#'    "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#' )
 #' normaliseData(risom_dat[, risomMarkers])
 #'
 #' @author
@@ -127,7 +134,9 @@ normalizeData <- function(data, markers, method = "none", cofactor = 5) {
 #'
 #' @examples
 #' data("risom_dat")
-#' risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+#' risomMarkers <- c(
+#'  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#' )
 #' generatePrototypes(risom_dat[, risomMarkers])
 #'
 #' @export
@@ -175,7 +184,9 @@ generatePrototypes <- function(data, verbose = FALSE, size = NULL) {
 #'
 #' @examples
 #' data("risom_dat")
-#' risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+#' risomMarkers <- c(
+#'  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#' )
 #' prototypes <- generatePrototypes(risom_dat[, risomMarkers])
 #' clusters <- clusterPrototypes(prototypes, 23)
 #'
@@ -217,12 +228,15 @@ clusterPrototypes <- function(somModel, numClusters = NULL) {
 
 
 #' A wrapper function to run the FuseSOM algorithm.
-#' This function accepts a matrix, dataframe or a SingleCellExperiment object
+#' This function accepts a matrix, dataframe or a SingleCellExperiment object.
+#' For matrices and dataframes, it is assumed that markers are the columns and
+#' samples rows.
 #'
-#' @param data a matrix, dataframe, SingleCellExperiment or SpatialExperiment object.
-#' For matrices and dataframes, it is assumed that markers are the columns and samples rows
+#' @param data a matrix, dataframe, SingleCellExperiment or SpatialExperiment
+#'             object.
 #' @param assay the assay of interest if SingleCellExperiment object is used
-#' @param markers the markers of interest. If this is not provided, all columns will be used
+#' @param markers the markers of interest. If this is not provided, all columns
+#'                will be used
 #' @param numClusters the number of clusters to be generated from the data
 #' @param clusterCol the name of the column to store the clusters in
 #' @param size the size of the square grid. eg for a 10X10 grid, size = 10
@@ -230,13 +244,17 @@ clusterPrototypes <- function(somModel, numClusters = NULL) {
 #'
 #' @return A list containing the SOM model and the cluster labels if a dataframe
 #' or matrix is provided
-#' @return A SingleCellExperiment object with labels in coldata, and the SOM model
+#' @return A SingleCellExperiment object with labels in coldata, and SOM model
 #' in metadata if a SingleCellExperiment or SpatialExperiment object is provided
 #'
 #' @examples
 #' data("risom_dat")
-#' risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
-#' res <- runFuseSOM(risom_dat, markers = risomMarkers, numClusters = 23, size = 8)
+#' risomMarkers <- c(
+#'  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#' )
+#' res <- runFuseSOM(
+#'  risom_dat, markers = risomMarkers, numClusters = 23, size = 8
+#' )
 #'
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
@@ -260,20 +278,26 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
     if (is.null(markers)) {
       numNumeric <- sum(apply(data, 2, function(x) is.numeric(x)))
       if (numNumeric != ncol(data)) {
-        stop("If markers of interest are not provided, make sure the data contains all numeric columns")
+        stop("If markers of interest are not provided, make sure the data ", 
+             "contains all numeric columns")
       }
       dataNew <- data
     } else {
       # extract the markers of interest
       dataNew <- data[, markers]
     }
-  } else if (is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")) { # if we have a single cell experiment object
+  # if we have a single cell experiment object
+  } else if (is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")) {
     flag <- TRUE
     message("You have provided a dataset of class ", class(data)[[1]])
 
     # make sure an assay is provided
     if (is.null(assay)) {
-      stop("If a ", class(data)[[1]], " make sure the appropriate assay is provided as well")
+      stop(
+        "If a ",
+        class(data)[[1]],
+        " make sure the appropriate assay is provided as well"
+      )
     }
     dataNew <- t(assay(data, assay))
 
@@ -281,7 +305,8 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
     if (is.null(markers)) {
       numNumeric <- sum(apply(dataNew, 2, function(x) is.numeric(x)))
       if (numNumeric != ncol(dataNew)) {
-        stop("If markers of interest are not provided, make sure the data contains all numeric columns")
+        stop("If markers of interest are not provided, ",
+             "make sure the data contains all numeric columns")
       }
     } else {
       # extract the markers of interest
@@ -291,7 +316,10 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
 
     # check if the prototypes have already been generated
     if (!is.null(metadata(data)$SOM)) {
-      message("The prototypes have already been generated. Checking to see if the current markes were used to generate the prototypes")
+      message(
+        "The prototypes have already been generated. Checking to see ",
+        "if the current markes were used to generate the prototypes"
+      )
       # check to see if the same markers were used to generate the previous SOM
       oldSom <- metadata(data)$SOM
       oldMarkers <- colnames(oldSom$prototypes)
@@ -299,33 +327,47 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
       # if no markers were provided
       if (is.null(markers)) {
         if (identical(oldMarkers, colnames(dataNew))) {
-          message("The same markers were used to generate the prototypes. Will proceed to clustering the prototypes")
+          message(
+            "The same markers were used to generate the prototypes. ",
+            "Will proceed to clustering the prototypes"
+          )
           clusters <- clusterPrototypes(oldSom, numClusters = numClusters)
           colData(data)$clusters <- clusters
           # update the cluster name
           names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
           return(data)
         } else {
-          message("Different markers were used to generate the prototypes. Will regenerate the self organizing map and then cluster prototypes")
+          message(
+            "Different markers were used to generate the prototypes. ",
+            "Will regenerate the SOM and then cluster prototypes"
+          )
         }
 
         # markers were provided
       } else {
         if (identical(oldMarkers, markers)) {
-          message("The same markers were used to generate the prototypes. Will proceed to clustering the prototypes")
+          message(
+            "The same markers were used to generate the prototypes. ",
+            "Will proceed to clustering the prototypes"
+          )
           clusters <- clusterPrototypes(oldSom, numClusters = numClusters)
           colData(data)$clusters <- clusters
           # update the cluster name
           names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
           return(data)
         } else {
-          message("Different markers were used to generate the prototypes. Will regenerate the self organizing map and then cluster prototypes")
+          message(
+            "Different markers were used to generate the prototypes. ",
+            "Will regenerate the SOM and then cluster prototypes"
+          )
         }
       }
     }
   } else {
-    stop("Please provide a dataset of type SingleCellExperiment, SpatialExperiment,
-         data.frame or matrix")
+    stop(
+      "Please provide a dataset of type SingleCellExperiment, ",
+      "SpatialExperiment, data.frame or matrix"
+    )
   }
 
   # now we can run the FuseSOM algorithm
@@ -382,7 +424,9 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
 estimateNumCluster <- function(data,
                                method = c("Discriminant", "Distance"),
                                kSeq = 2:20) {
-  if (1 %in% kSeq) stop("Please select a k sequence starting with 2: {2,3,...K}!")
+  if (1 %in% kSeq) {
+    stop("Please select a k sequence starting with 2: {2,3,...K}!")
+  }
 
   flag <- FALSE
 
