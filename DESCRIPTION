@@ -25,7 +25,8 @@ Imports:
         ggpubr,
         proxy,
         cluster, 
-        diptest
+        diptest,
+        methods
 LazyData: false
 BuildResaveData: false
 Depends: 
