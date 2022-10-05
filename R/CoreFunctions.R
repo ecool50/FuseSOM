@@ -243,6 +243,7 @@ clusterPrototypes <- function(somModel, numClusters=NULL){
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
 #'
 #' @importFrom methods is
+#' @importFrom SummarizedExperiment colData colData<-
 #' @export
 #' 
 runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
@@ -382,6 +383,7 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
 #' @importFrom FCPS HierarchicalClustering
 #' @importFrom methods is
 #' @importFrom stats cor
+#' @importFrom S4Vectors metadata metadata<-
 #' @export
 #' 
 estimateNumCluster <- function(data, 
