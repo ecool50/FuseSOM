@@ -40,6 +40,7 @@ If you have a matrix containing expression data that was QCed and normalised by 
 
 ```{r, message=FALSE, warning=FALSE}
 # load FuseSOM
+library(SingleCellExperiment)
 library(FuseSOM)
 
 ```

@@ -2,7 +2,10 @@
 #' Function to estimate the number of clusters using discriminant analysis
 #' parts of this function is based on the sigclust2 package by Patrick Kimes
 #' see https://github.com/pkimes/sigclust2
-#' 
+#'
+#' @param distMat A distance matrix
+#' @param minClusterSize The minimum cluster size 
+#' @param alpha a value between 0 and 1 specifying the desired level of cutoff
 #' @importFrom stats kmeans
 .runDiscriminant <- function(distMat, minClusterSize, alpha=0.001){
   
