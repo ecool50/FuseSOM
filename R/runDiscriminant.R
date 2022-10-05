@@ -92,7 +92,7 @@
 .idxHc <- function(hc, n) {
   ## list array of cluster indices at each of the n-1 merges
   idxHC <- array(list(), c(2*n-1, 2))
-  idxHC[1:n, 1] <- as.list(n:1)
+  idxHC[seq_len(n), 1] <- as.list(n:1)
   idxHC[(n+1):(2*n-1), ] <- hc$merge + n + (hc$merge<0)
   
   ## complete idxHC

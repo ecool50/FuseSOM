@@ -47,7 +47,9 @@
   
   # sample data and combine to data matrix
   dataSynt  <- matrix(NA,nrow=nrow(data),ncol=ncol(data))
-  for(i in 1:ncol(data)) dataSynt[, i] <- stats::runif(n, unifDims[i, 1], unifDims[i, 2])
+  for(i in seq_len(ncol(data))) {
+    dataSynt[, i] <- stats::runif(n, unifDims[i, 1], unifDims[i, 2])
+  }
   return(dataSynt)
 }
 

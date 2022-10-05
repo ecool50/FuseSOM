@@ -41,7 +41,7 @@
   for(i in seq_len(gapIter)) {
     dataSyn = .uniformData(data)
     WCDs = numeric()
-    for(j in 1:length(kSeq)) {
+    for(j in seq_along(kSeq)) {
       k = kSeq[j]
       obj = .getMeasures(data = dataSyn, k = k, measures = c('wcd'))
       WCDs[j] = obj$WCD
