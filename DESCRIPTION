@@ -33,7 +33,8 @@ Depends:
     R (>= 4.1.0)
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    SingleCellExperiment
 VignetteBuilder: knitr
 BugReports: https://github.com/ecool50/FuseSOM/issues
 LinkingTo: Rcpp
