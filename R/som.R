@@ -105,7 +105,7 @@ batchSom.default <- function(data, somGrid, init = c("pca", "random"), prototype
                              verbose = FALSE, keepdata = TRUE, ...) {
   theCall <- match.call()
   if (verbose) {
-    print(theCall)
+    message(theCall)
   }
   theCall[[1]] <- batchSomControl
   control <- eval(theCall, envir = parent.frame())
