@@ -243,7 +243,6 @@ clusterPrototypes <- function(somModel, numClusters=NULL){
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
 #'
 #' @importFrom methods is
-#' @importFrom metadata
 #' @export
 #' 
 runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
