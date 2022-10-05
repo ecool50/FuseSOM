@@ -28,11 +28,12 @@ Imports:
         diptest,
         methods,
         SummarizedExperiment,
+        stats,
         S4Vectors
 LazyData: false
 BuildResaveData: false
 Depends: 
-    R (>= 4.1.0)
+    R (>= 4.2.0)
 Suggests: 
     knitr,
     rmarkdown,
