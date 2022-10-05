@@ -10,6 +10,9 @@ this function was obtained from the Stab package}
 \arguments{
 \item{data}{A data matrix.}
 }
+\value{
+Uniform random noise with \code{dim(data)}
+}
 \description{
 Creates uniformly distributed data of same dimensionality as input data
 this function was obtained from the Stab package

@@ -9,6 +9,9 @@
 \arguments{
 \item{x}{Matrix to min max nomalize.}
 }
+\value{
+Max normalized version of \code{x}
+}
 \description{
 Function to do min max normalization
 }

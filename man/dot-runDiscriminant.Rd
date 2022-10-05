@@ -15,6 +15,9 @@ see https://github.com/pkimes/sigclust2}
 
 \item{alpha}{a value between 0 and 1 specifying the desired level of cutoff}
 }
+\value{
+Optimal number of clusters
+}
 \description{
 Function to estimate the number of clusters using discriminant analysis
 parts of this function is based on the sigclust2 package by Patrick Kimes

@@ -20,6 +20,11 @@ components when no weights are given (see details)}
 
 \item{...}{not used}
 }
+\value{
+A list containing: \code{prototype}, a matrix containing appropriate
+initial prototypes, and \code{data.pca} the results of the PCA conducted
+on the data
+}
 \description{
 these functions were obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
 }

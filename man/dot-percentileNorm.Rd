@@ -9,6 +9,9 @@
 \arguments{
 \item{x}{Matrix to percentile normilse.}
 }
+\value{
+percentile normalized version of \code{x}
+}
 \description{
 Function to do percentile normalizaton
 }

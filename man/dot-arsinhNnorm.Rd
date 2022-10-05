@@ -11,6 +11,9 @@
 
 \item{cofactor}{Cofactor of the vector. Default is 5.}
 }
+\value{
+Arsinh normalized vector.
+}
 \description{
 Function to do arsinh normalization
 }

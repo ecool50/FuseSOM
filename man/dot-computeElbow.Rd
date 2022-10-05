@@ -9,6 +9,9 @@
 \arguments{
 \item{vals}{Values to compute the elbow point of.}
 }
+\value{
+A integer indicating the elbow point of \code{vals}.
+}
 \description{
 A function to compute the elbow point given a set of points
 }
