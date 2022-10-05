@@ -44,8 +44,8 @@ This function accepts a matrix, dataframe or a SingleCellExperiment object
 }
 \examples{
 data("risom_dat")
-risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
-res <- runFuseSOM(risom_dat, markers=risomMarkers, numClusters=23, size=8)
+risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+res <- runFuseSOM(risom_dat, markers = risomMarkers, numClusters = 23, size = 8)
 
 }
 \author{

@@ -23,7 +23,7 @@ The grid size is determined automatically
 }
 \examples{
 data("risom_dat")
-risomMarkers <- c('CD45','SMA','CK7','CK5','VIM','CD31','PanKRT','ECAD')
+risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
 generatePrototypes(risom_dat[, risomMarkers])
 
 }
