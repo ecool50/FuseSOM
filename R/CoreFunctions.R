@@ -33,7 +33,7 @@ computeGridSize <- function(dataset) {
   # compute eigenvalues and return the amount which falls above the bound
   evals <- eigen(sigmaHatNaive, symmetric = TRUE, only.values = TRUE)$values
   k <- 0
-  for (i in 1:length(evals)) {
+  for (i in seq_along(evals)) {
     if (evals[i] > bd) {
       k <- k + 1
     }
@@ -186,6 +186,7 @@ generatePrototypes <- function(data, verbose=FALSE, size=NULL){
 #' @importFrom analogue fuse
 #' @importFrom psych cor2dist
 #' @importFrom FCPS HierarchicalClustering
+#' @importFrom stats cor
 #' @export
 clusterPrototypes <- function(somModel, numClusters=NULL){
   if(is.null(numClusters)){
@@ -241,6 +242,8 @@ clusterPrototypes <- function(somModel, numClusters=NULL){
 #' @author
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
 #'
+#' @importFrom methods is
+#' @importFrom metadata
 #' @export
 #' 
 runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
@@ -378,6 +381,8 @@ runFuseSOM <- function(data,markers=NULL, numClusters=NULL, assay=NULL,
 #' @importFrom analogue fuse
 #' @importFrom psych cor2dist
 #' @importFrom FCPS HierarchicalClustering
+#' @importFrom methods is
+#' @importFrom stats cor
 #' @export
 #' 
 estimateNumCluster <- function(data, 
@@ -475,9 +480,9 @@ estimateNumCluster <- function(data,
 #' @import ggplot2
 #' @import ggpubr
 #' @import stringr
+#' @importFrom methods is
 #' @export
 #' 
-
 optiPlot <- function(data, method='jump'){
   
   # make sure a valid method is provided
@@ -489,36 +494,35 @@ optiPlot <- function(data, method='jump'){
   if(is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")){
     message(paste("You have provided a dataset of class:", class(data)[[1]]))
     kEst <- data@metadata$clusterEstimation
-    
   } else { # if we just have the som model
     kEst <- data
   }
-  
+
   # extract the relevant information for the method provided
   if(method == 'jump'){
     method <- stringr::str_to_title(method)
     jumps <- kEst$Distance$Jumps
-    plotData <- data.frame(Clusters=1:length(jumps), Jump=jumps)
+    plotData <- data.frame(Clusters = seq_along(jumps), Jump=jumps)
     kOpti <- kEst$Distance$kJump
   } else if(method == 'slope'){
     method <- stringr::str_to_title(method)
     slopes <- kEst$Distance$Slopes
-    plotData <- data.frame(Clusters=1:length(slopes), Slope=slopes)
+    plotData <- data.frame(Clusters = seq_along(slopes), Slope=slopes)
     kOpti <- kEst$Distance$kSlope
   } else if(method == 'wcd'){
     method <- stringr::str_to_upper(method)
     wcds <- kEst$Distance$WCD
-    plotData <- data.frame(Clusters=1:length(wcds), WCD=wcds)
+    plotData <- data.frame(Clusters=seq_along(wcds), WCD=wcds)
     kOpti <- kEst$Distance$kWCD
   } else if(method == 'gap'){
     method <- stringr::str_to_title(method)
     gaps <- kEst$Distance$Gaps
-    plotData <- data.frame(Clusters=1:length(gaps), Gap=gaps)
+    plotData <- data.frame(Clusters=seq_along(gaps), Gap=gaps)
     kOpti <- kEst$Distance$kGap
   } else{
     method <- stringr::str_to_title(method)
     silhouettes <- kEst$Distance$Silhouettes
-    plotData <- data.frame(Clusters=1:length(silhouettes), 
+    plotData <- data.frame(Clusters=seq_along(silhouettes), 
                            Silhouette=silhouettes)
     kOpti <- kEst$Distance$kSil
   } 
@@ -563,6 +567,8 @@ optiPlot <- function(data, method='jump'){
 #'   Elijah WIllie <ewil3501@uni.sydney.edu.au>
 #' @importFrom ggplotify as.ggplot
 #' @importFrom pheatmap pheatmap
+#' @importFrom methods is
+#' @importFrom stats aggregate sd
 #' @export
 #' 
 markerHeatmap <- function(data, markers=NULL, clusters=NULL, threshold=2,

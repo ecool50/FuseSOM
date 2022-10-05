@@ -1,7 +1,9 @@
 
-# function to estimate the number of clusters using discriminant analysis
-# parts of this function is based on the sigclust2 package by Patrick Kimes
-# see https://github.com/pkimes/sigclust2
+#' Function to estimate the number of clusters using discriminant analysis
+#' parts of this function is based on the sigclust2 package by Patrick Kimes
+#' see https://github.com/pkimes/sigclust2
+#' 
+#' @importFrom stats kmeans
 .runDiscriminant <- function(distMat, minClusterSize, alpha=0.001){
   
   # do some house keeping

@@ -1,5 +1,6 @@
-# these functions were obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
-
+#' these functions were obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
+#' 
+#' @importFrom stats princomp prcomp cov.wt
 somInitPca.default <- function(data,somGrid,weights,with.princomp=FALSE,...) {
   ### FIXME: data weights support
   ## we don't scale the data

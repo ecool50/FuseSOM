@@ -1,5 +1,7 @@
 
-# function to do percentile normalizaton
+#' Function to do percentile normalizaton
+#'
+#' @importFrom stats quantile
 .percentileNorm <- function(x){
   x <- as.matrix(x)
   percentiles <- quantile(x, probs = c(0.01, 0.99))
@@ -10,7 +12,9 @@
   return(x)
 }
 
-# function to do min max normalization
+#' Function to do min max normalization
+#'
+#' @importFrom stats quantile
 .minmaxNorm <- function(x){
   x <- as.matrix(x)
   percentiles <- quantile(x, probs = c(0.01, 0.99))
@@ -20,14 +24,14 @@
   return(x)
 }
 
-# function to do arsinh normalization
+#' Function to do arsinh normalization
 .arsinhNnorm <- function(x, cofactor=5){
   x <- asinh(x/cofactor)
   return(x)
 }
 
-# Creates uniformly distributed data of same dimensionality as input data
-# this function was obtained from the Stab package
+#' Creates uniformly distributed data of same dimensionality as input data
+#' this function was obtained from the Stab package
 .uniformData <- function(data) {
   
   # get dimensions of data
@@ -40,7 +44,7 @@
   return(dataSynt)
 }
 
-# a function to compute the elbow point given a set of points
+#' A function to compute the elbow point given a set of points
 .computeElbow <- function(vals){
   diffs <- diff(vals)
   diffs <- diffs[-1]
