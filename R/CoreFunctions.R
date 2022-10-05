@@ -143,9 +143,9 @@ generatePrototypes <- function(data, verbose = FALSE, size = NULL) {
       size <- size
     }
 
-    message(paste("Optimal Grid Size is: ", size))
+    message("Optimal Grid Size is: ", size)
   } else {
-    message(paste("You have provided a grid size of:", size * size))
+    message("You have provided a grid size of:", size * size)
   }
 
   # genearte the som grid based on the computed grid size
@@ -255,7 +255,7 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
 
   # if we have a dataframe or a matrix
   if (is(data, "data.frame") || is(data, "matrix")) {
-    message(paste("You have provided a dataset of class", class(data)[[1]]))
+    message("You have provided a dataset of class ", class(data)[[1]])
     # if no markers are given, make sure all the columns are numeric
     if (is.null(markers)) {
       numNumeric <- sum(apply(data, 2, function(x) is.numeric(x)))
@@ -269,11 +269,11 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
     }
   } else if (is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")) { # if we have a single cell experiment object
     flag <- TRUE
-    message(paste("You have provided a dataset of class", class(data)[[1]]))
+    message("You have provided a dataset of class ", class(data)[[1]])
 
     # make sure an assay is provided
     if (is.null(assay)) {
-      stop(paste("If a", class(data)[[1]], "make sure the appropriate assay is provided as well"))
+      stop("If a ", class(data)[[1]], " make sure the appropriate assay is provided as well")
     }
     dataNew <- t(assay(data, assay))
 
@@ -389,7 +389,7 @@ estimateNumCluster <- function(data,
   # if we have a single cell experiment or spatial experiment object
   if (is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")) {
     flag <- TRUE
-    message(paste("You have provided a dataset of class:", class(data)[[1]]))
+    message("You have provided a dataset of class: ", class(data)[[1]])
     somModel <- data@metadata$SOM
   } else { # if we just have the som model
     somModel <- data
@@ -482,7 +482,7 @@ optiPlot <- function(data, method = "jump") {
 
   # if we have a single cell experiment object
   if (is(data, "SingleCellExperiment") || is(data, "SpatialExperiment")) {
-    message(paste("You have provided a dataset of class:", class(data)[[1]]))
+    message("You have provided a dataset of class: ", class(data)[[1]])
     kEst <- data@metadata$clusterEstimation
   } else { # if we just have the som model
     kEst <- data
