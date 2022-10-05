@@ -20,7 +20,10 @@
   numClusters <- 0
 
   # generate the initial tree
-  initTree <- fastcluster::hclust(dist(distMat, method = "maximum"), method = "average")
+  initTree <- fastcluster::hclust(
+    dist(distMat, method = "maximum"),
+    method = "average"
+  )
 
   # process the resulting dendrogram
   hcDat <- initTree
