@@ -95,7 +95,7 @@ normaliseData <- function(data, markers, method = "none", cofactor = 5) {
 #' @examples
 #' data("risom_dat")
 #' risomMarkers <- c(
-#'    "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#'   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 #' )
 #' normaliseData(risom_dat[, risomMarkers])
 #'
@@ -135,7 +135,7 @@ normalizeData <- function(data, markers, method = "none", cofactor = 5) {
 #' @examples
 #' data("risom_dat")
 #' risomMarkers <- c(
-#'  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#'   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 #' )
 #' generatePrototypes(risom_dat[, risomMarkers])
 #'
@@ -185,7 +185,7 @@ generatePrototypes <- function(data, verbose = FALSE, size = NULL) {
 #' @examples
 #' data("risom_dat")
 #' risomMarkers <- c(
-#'  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#'   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 #' )
 #' prototypes <- generatePrototypes(risom_dat[, risomMarkers])
 #' clusters <- clusterPrototypes(prototypes, 23)
@@ -250,10 +250,11 @@ clusterPrototypes <- function(somModel, numClusters = NULL) {
 #' @examples
 #' data("risom_dat")
 #' risomMarkers <- c(
-#'  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#'   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 #' )
 #' res <- runFuseSOM(
-#'  risom_dat, markers = risomMarkers, numClusters = 23, size = 8
+#'   risom_dat,
+#'   markers = risomMarkers, numClusters = 23, size = 8
 #' )
 #'
 #' @author
@@ -280,15 +281,16 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
       if (numNumeric != ncol(data)) {
         stop(
           "If markers of interest are not provided, make sure the data ",
-          "contains all numeric columns")
+          "contains all numeric columns"
+        )
       }
       dataNew <- data
     } else {
       # extract the markers of interest
       dataNew <- data[, markers]
     }
-  # if we have a single cell experiment object
-  # if it is SpatialExperiment then is also a  SingleCellExperiment
+    # if we have a single cell experiment object
+    # if it is SpatialExperiment then is also a  SingleCellExperiment
   } else if (is(data, "SingleCellExperiment")) {
     flag <- TRUE
     message("You have provided a dataset of class ", class(data)[[1]])
@@ -307,8 +309,10 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
     if (is.null(markers)) {
       numNumeric <- sum(apply(dataNew, 2, function(x) is.numeric(x)))
       if (numNumeric != ncol(dataNew)) {
-        stop("If markers of interest are not provided, ",
-             "make sure the data contains all numeric columns")
+        stop(
+          "If markers of interest are not provided, ",
+          "make sure the data contains all numeric columns"
+        )
       }
     } else {
       # extract the markers of interest
@@ -411,7 +415,7 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
 #' @examples
 #' data("risom_dat")
 #' risomMarkers <- c(
-#'  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#'   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 #' )
 #' res <- runFuseSOM(risom_dat, markers = risomMarkers, numClusters = 23)
 #' res.est.k <- estimateNumCluster(res$model, kSeq = 2:25)
@@ -513,7 +517,7 @@ estimateNumCluster <- function(data,
 #' @examples
 #' data("risom_dat")
 #' risomMarkers <- c(
-#'  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#'   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 #' )
 #' res <- runFuseSOM(risom_dat, markers = risomMarkers, numClusters = 23)
 #' resEstK <- estimateNumCluster(res$model, kSeq = 2:25)
@@ -575,7 +579,8 @@ optiPlot <- function(data, method = "jump") {
 
   # plot the data
   pOpti <- ggpubr::ggline(
-    plotData, x = "Clusters", y = method, group = 1, color = "steelblue"
+    plotData,
+    x = "Clusters", y = method, group = 1, color = "steelblue"
   ) +
     geom_vline(xintercept = kOpti, linetype = 2, color = "steelblue") +
     labs(
@@ -610,7 +615,7 @@ optiPlot <- function(data, method = "jump") {
 #' @examples
 #' data("risom_dat")
 #' risomMarkers <- c(
-#'  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+#'   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 #' )
 #' res <- runFuseSOM(risom_dat, markers = risomMarkers, numClusters = 23)
 #' p.heat <- markerHeatmap(risom_dat, risomMarkers, clusters = res$clusters)

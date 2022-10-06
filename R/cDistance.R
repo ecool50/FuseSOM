@@ -1,6 +1,6 @@
 # A function to estimate the number of clusters using the distance method
 # see https://arxiv.org/abs/1608.07494
-# function was obtained from https://github.com/cran/cstab with some 
+# function was obtained from https://github.com/cran/cstab with some
 # minor modifications
 
 .cDistance <- function(data, # n x p data matrix
