@@ -1,5 +1,5 @@
-# A function to generate the radii values for the Gaussian kernel
-# function was obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
+# A function to generate the radii values for the Gaussian kernel function was
+# obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
 
 radiusExp <- function(min, max, steps) {
   max * (min / max)^(seq(0, 1, length.out = steps))

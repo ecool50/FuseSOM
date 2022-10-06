@@ -1,11 +1,12 @@
 # A function to estimate the number of clusters using the distance method
 # see https://arxiv.org/abs/1608.07494
-# function was obtained from https://github.com/cran/cstab with some minor modifications
+# function was obtained from https://github.com/cran/cstab with some 
+# minor modifications
 
 .cDistance <- function(data, # n x p data matrix
                        kSeq, # sequence of ks to be checked
                        linkage = "average",
-                       gapIter = 10) # number of simulated datasets in gap statistic
+                       gapIter = 10) # n of simulated datasets in gap statistic
 {
 
   # ----- INPUT TESTS
@@ -14,7 +15,9 @@
   if (sum(is.na(data)) > 0) stop("No missing values permitted!")
 
   # On k-sequence
-  if (1 %in% kSeq) stop("Please select a k sequence starting with 2: {2,3,...K}!")
+  if (1 %in% kSeq) {
+    stop("Please select a k sequence starting with 2: {2,3,...K}!")
+  }
 
 
   # ----- HELPERS
