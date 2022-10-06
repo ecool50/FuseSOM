@@ -36,7 +36,9 @@ A function for generating a heat map of marker expression across clusters
 }
 \examples{
 data("risom_dat")
-risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+risomMarkers <- c(
+ "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+)
 res <- runFuseSOM(risom_dat, markers = risomMarkers, numClusters = 23)
 p.heat <- markerHeatmap(risom_dat, risomMarkers, clusters = res$clusters)
 

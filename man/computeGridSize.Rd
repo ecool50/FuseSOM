@@ -20,7 +20,9 @@ The function is based on the estKW function from the SC3 package
 }
 \examples{
 data("risom_dat")
-risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+risomMarkers <- c(
+  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+)
 computeGridSize(risom_dat[, risomMarkers])
 
 }

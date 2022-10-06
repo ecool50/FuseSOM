@@ -2,7 +2,8 @@
 % Please edit documentation in R/som.R
 \name{somInitPca.default}
 \alias{somInitPca.default}
-\title{these functions were obtained from https://rdrr.io/rforge/yasomi/ with some major modifications}
+\title{these functions were obtained from https://rdrr.io/rforge/yasomi/
+with some major modifications}
 \usage{
 \method{somInitPca}{default}(data, somGrid, weights, with.princomp = FALSE, ...)
 }
@@ -26,5 +27,6 @@ initial prototypes, and \code{data.pca} the results of the PCA conducted
 on the data
 }
 \description{
-these functions were obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
+these functions were obtained from https://rdrr.io/rforge/yasomi/
+with some major modifications
 }

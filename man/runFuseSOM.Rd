@@ -3,7 +3,9 @@
 \name{runFuseSOM}
 \alias{runFuseSOM}
 \title{A wrapper function to run the FuseSOM algorithm.
-This function accepts a matrix, dataframe or a SingleCellExperiment object}
+This function accepts a matrix, dataframe or a SingleCellExperiment object.
+For matrices and dataframes, it is assumed that markers are the columns and
+samples rows.}
 \usage{
 runFuseSOM(
   data,
@@ -16,10 +18,11 @@ runFuseSOM(
 )
 }
 \arguments{
-\item{data}{a matrix, dataframe, SingleCellExperiment or SpatialExperiment object.
-For matrices and dataframes, it is assumed that markers are the columns and samples rows}
+\item{data}{a matrix, dataframe, SingleCellExperiment or SpatialExperiment
+object.}
 
-\item{markers}{the markers of interest. If this is not provided, all columns will be used}
+\item{markers}{the markers of interest. If this is not provided, all columns
+will be used}
 
 \item{numClusters}{the number of clusters to be generated from the data}
 
@@ -35,17 +38,23 @@ For matrices and dataframes, it is assumed that markers are the columns and samp
 A list containing the SOM model and the cluster labels if a dataframe
 or matrix is provided
 
-A SingleCellExperiment object with labels in coldata, and the SOM model
+A SingleCellExperiment object with labels in coldata, and SOM model
 in metadata if a SingleCellExperiment or SpatialExperiment object is provided
 }
 \description{
 A wrapper function to run the FuseSOM algorithm.
-This function accepts a matrix, dataframe or a SingleCellExperiment object
+This function accepts a matrix, dataframe or a SingleCellExperiment object.
+For matrices and dataframes, it is assumed that markers are the columns and
+samples rows.
 }
 \examples{
 data("risom_dat")
-risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
-res <- runFuseSOM(risom_dat, markers = risomMarkers, numClusters = 23, size = 8)
+risomMarkers <- c(
+ "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+)
+res <- runFuseSOM(
+ risom_dat, markers = risomMarkers, numClusters = 23, size = 8
+)
 
 }
 \author{

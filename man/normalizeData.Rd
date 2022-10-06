@@ -27,7 +27,9 @@ These methods include Percentile, zscore, arsinh and minmax
 }
 \examples{
 data("risom_dat")
-risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+risomMarkers <- c(
+   "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+)
 normaliseData(risom_dat[, risomMarkers])
 
 }

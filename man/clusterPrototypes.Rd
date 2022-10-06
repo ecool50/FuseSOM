@@ -20,7 +20,9 @@ the average linkage function
 }
 \examples{
 data("risom_dat")
-risomMarkers <- c("CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD")
+risomMarkers <- c(
+ "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+)
 prototypes <- generatePrototypes(risom_dat[, risomMarkers])
 clusters <- clusterPrototypes(prototypes, 23)
 
