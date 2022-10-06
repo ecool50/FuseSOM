@@ -1,4 +1,5 @@
-#' these functions were obtained from https://rdrr.io/rforge/yasomi/ with some major modifications
+#' these functions were obtained from https://rdrr.io/rforge/yasomi/
+#' with some major modifications
 #'
 #' @param data The data to which the SOM will be fitted, a matrix or data frame
 #'             of observations (which should be scaled)
@@ -13,7 +14,11 @@
 #'         on the data
 #'
 #' @importFrom stats princomp prcomp cov.wt
-somInitPca.default <- function(data, somGrid, weights, with.princomp = FALSE, ...) {
+somInitPca.default <- function(data,
+                               somGrid,
+                               weights,
+                               with.princomp = FALSE,
+                               ...) {
   ### FIXME: data weights support
   ## we don't scale the data
   if (missing(weights) || is.null(weights)) {
@@ -38,15 +43,31 @@ somInitPca.default <- function(data, somGrid, weights, with.princomp = FALSE, ..
     if (somGrid$yDim > 1) {
       xSpan <- xSpan + 0.5
     }
-    x <- seq(from = -2 * dataPca$sdev[xEv], by = 4 * dataPca$sdev[xEv] / xSpan, length.out = somGrid$xDim)
+    x <- seq(
+      from = -2 * dataPca$sdev[xEv],
+      by = 4 * dataPca$sdev[xEv] / xSpan,
+      length.out = somGrid$xDim
+    )
   } else {
-    x <- seq(from = -2 * dataPca$sdev[xEv], to = 2 * dataPca$sdev[xEv], length.out = somGrid$xDim)
+    x <- seq(
+      from = -2 * dataPca$sdev[xEv],
+      to = 2 * dataPca$sdev[xEv],
+      length.out = somGrid$xDim
+    )
   }
-  y <- seq(from = 2 * dataPca$sdev[yEv], to = -2 * dataPca$sdev[yEv], length.out = somGrid$yDim)
+  y <- seq(
+    from = 2 * dataPca$sdev[yEv],
+    to = -2 * dataPca$sdev[yEv],
+    length.out = somGrid$yDim
+  )
   base <- as.matrix(expand.grid(x = x, y = y))
   ## correction for hexagonal grids
   if (somGrid$topo == "hexagonal") {
-    base[, 1] <- base[, 1] + rep(c(0, 2 * dataPca$sdev[xEv] / xSpan), each = somGrid$xDim, length.out = nrow(base))
+    base[, 1] <- base[, 1] + rep(
+      c(0, 2 * dataPca$sdev[xEv] / xSpan),
+      each = somGrid$xDim,
+      length.out = nrow(base)
+    )
   }
   ## map back the grid to the original space
   if (inherits(dataPca, "prcomp")) {
@@ -97,7 +118,8 @@ secondBmu <- function(prototypes, data) {
   )$clusters, ncol = 2)
 }
 
-batchSom.default <- function(data, somGrid, init = c("pca", "random"), prototypes,
+batchSom.default <- function(data, somGrid,
+                             init = c("pca", "random"), prototypes,
                              weights,
                              mode = c("continuous", "stepwise"),
                              minRadius, maxRadius, steps,
@@ -170,7 +192,8 @@ batchSom.default <- function(data, somGrid, init = c("pca", "random"), prototype
   pre
 }
 
-batchSomLowLevel <- function(somGrid, data, prototypes, weights, control, verbose) {
+batchSomLowLevel <- function(somGrid, data, prototypes,
+                             weights, control, verbose) {
   result <- .C("batch_som_optim",
     proto = as.double(prototypes),
     as.integer(somGrid$size),
