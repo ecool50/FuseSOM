@@ -2,10 +2,7 @@
 % Please edit documentation in R/CoreFunctions.R
 \name{runFuseSOM}
 \alias{runFuseSOM}
-\title{A wrapper function to run the FuseSOM algorithm.
-This function accepts a matrix, dataframe or a SingleCellExperiment object.
-For matrices and dataframes, it is assumed that markers are the columns and
-samples rows.}
+\title{A wrapper function to run the FuseSOM algorithm}
 \usage{
 runFuseSOM(
   data,
@@ -42,7 +39,6 @@ A SingleCellExperiment object with labels in coldata, and SOM model
 in metadata if a SingleCellExperiment or SpatialExperiment object is provided
 }
 \description{
-A wrapper function to run the FuseSOM algorithm.
 This function accepts a matrix, dataframe or a SingleCellExperiment object.
 For matrices and dataframes, it is assumed that markers are the columns and
 samples rows.
@@ -50,10 +46,11 @@ samples rows.
 \examples{
 data("risom_dat")
 risomMarkers <- c(
- "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 )
 res <- runFuseSOM(
- risom_dat, markers = risomMarkers, numClusters = 23, size = 8
+  risom_dat,
+  markers = risomMarkers, numClusters = 23, size = 8
 )
 
 }

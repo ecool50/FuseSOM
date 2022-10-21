@@ -2,9 +2,7 @@
 % Please edit documentation in R/CoreFunctions.R
 \name{generatePrototypes}
 \alias{generatePrototypes}
-\title{Generate a Self Organizing Map and return it's prototypes
-A self organizing map of the marker intensities is generated using the
-Yasomi package.}
+\title{Generate a Self Organizing Map}
 \usage{
 generatePrototypes(data, verbose = FALSE, size = NULL)
 }
@@ -19,12 +17,14 @@ generatePrototypes(data, verbose = FALSE, size = NULL)
 the self organizing map object
 }
 \description{
+A self organizing map of the marker intensities is generated and the
+prototypes are returned.
 The grid size is determined automatically
 }
 \examples{
 data("risom_dat")
 risomMarkers <- c(
- "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 )
 generatePrototypes(risom_dat[, risomMarkers])
 

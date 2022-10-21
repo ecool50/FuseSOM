@@ -2,7 +2,7 @@
 % Please edit documentation in R/CoreFunctions.R
 \name{computeGridSize}
 \alias{computeGridSize}
-\title{Estimate the optimal grid size for the Self Organizing Map}
+\title{Estimate the optimal grid size}
 \usage{
 computeGridSize(dataset)
 }

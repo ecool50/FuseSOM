@@ -2,9 +2,7 @@
 % Please edit documentation in R/runDiscriminant.R
 \name{.runDiscriminant}
 \alias{.runDiscriminant}
-\title{Function to estimate the number of clusters using discriminant analysis
-parts of this function is based on the sigclust2 package by Patrick Kimes
-see https://github.com/pkimes/sigclust2}
+\title{Discriminant cluster estimator}
 \usage{
 .runDiscriminant(distMat, minClusterSize, alpha = 0.001)
 }

@@ -1,4 +1,4 @@
-#' Estimate the optimal grid size for the Self Organizing Map
+#' Estimate the optimal grid size
 #'
 #' The function finds the eigenvalues of the sample covariance matrix.
 #' It will then return the number of significant eigenvalues according to
@@ -42,7 +42,8 @@ computeGridSize <- function(dataset) {
   return(k + 2)
 }
 
-#' normalise Marker Intensities
+#' Normalise Marker Intensities
+#' 
 #' The matrix of intensities is normalised based on one of four different method
 #' These methods include Percentile, zscore, arsinh and minmax
 #'
@@ -82,7 +83,8 @@ normaliseData <- function(data, markers, method = "none", cofactor = 5) {
 }
 
 
-#' normalize Marker Intensities
+#' Normalize Marker Intensities
+#' 
 #' The matrix of intensities is normalised based on one of four different method
 #' These methods include Percentile, zscore, arsinh and minmax
 #'
@@ -121,10 +123,10 @@ normalizeData <- function(data, markers, method = "none", cofactor = 5) {
 }
 
 
-#' Generate a Self Organizing Map and return it's prototypes
-#' A self organizing map of the marker intensities is generated using the
-#' Yasomi package.
-#'
+#' Generate a Self Organizing Map
+#' 
+#' A self organizing map of the marker intensities is generated and the 
+#' prototypes are returned.
 #' The grid size is determined automatically
 #'
 #' @param data the marker intensities
@@ -173,8 +175,9 @@ generatePrototypes <- function(data, verbose = FALSE, size = NULL) {
 }
 
 
-#' Cluster the prototypes from the Self Organizing Map
+#' Cluster prototypes
 #'
+#' Cluster the prototypes from the Self Organizing Map 
 #' Clustering is done using hierarchical clustering with
 #' the average linkage function
 #'
@@ -227,7 +230,8 @@ clusterPrototypes <- function(somModel, numClusters = NULL) {
 }
 
 
-#' A wrapper function to run the FuseSOM algorithm.
+#' A wrapper function to run the FuseSOM algorithm
+#' 
 #' This function accepts a matrix, dataframe or a SingleCellExperiment object.
 #' For matrices and dataframes, it is assumed that markers are the columns and
 #' samples rows.
@@ -397,6 +401,8 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
 
 
 
+#' Estimate number of clusters
+#' 
 #' A function for estimating the number of clusters using various method
 #' Methods available are: Discriminant, Distance
 #' (Gap, Silhouette, Slope, Jump, and Within Cluster Distance,) and Instability
@@ -504,6 +510,8 @@ estimateNumCluster <- function(data,
 
 
 
+#' Generate elbow plots
+#' 
 #' A function generating the elbow plot for the optimal number of clusters
 #' returned by the estimateNumcluster() function
 #' Methods available are:
@@ -600,6 +608,8 @@ optiPlot <- function(data, method = "jump") {
 
 
 
+#' Generate expression heatmap
+#' 
 #' A function for generating a heat map of marker expression across clusters
 #'
 #' @param data a matrix or dataframe where the rows are samples and columns are

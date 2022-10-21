@@ -2,7 +2,7 @@
 % Please edit documentation in R/CoreFunctions.R
 \name{clusterPrototypes}
 \alias{clusterPrototypes}
-\title{Cluster the prototypes from the Self Organizing Map}
+\title{Cluster prototypes}
 \usage{
 clusterPrototypes(somModel, numClusters = NULL)
 }
@@ -15,13 +15,14 @@ clusterPrototypes(somModel, numClusters = NULL)
 the cluster labels
 }
 \description{
+Cluster the prototypes from the Self Organizing Map
 Clustering is done using hierarchical clustering with
 the average linkage function
 }
 \examples{
 data("risom_dat")
 risomMarkers <- c(
- "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 )
 prototypes <- generatePrototypes(risom_dat[, risomMarkers])
 clusters <- clusterPrototypes(prototypes, 23)

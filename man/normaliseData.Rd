@@ -2,9 +2,7 @@
 % Please edit documentation in R/CoreFunctions.R
 \name{normaliseData}
 \alias{normaliseData}
-\title{normalise Marker Intensities
-The matrix of intensities is normalised based on one of four different method
-These methods include Percentile, zscore, arsinh and minmax}
+\title{Normalise Marker Intensities}
 \usage{
 normaliseData(data, markers, method = "none", cofactor = 5)
 }
@@ -21,7 +19,6 @@ normaliseData(data, markers, method = "none", cofactor = 5)
 normalised matrix.
 }
 \description{
-normalise Marker Intensities
 The matrix of intensities is normalised based on one of four different method
 These methods include Percentile, zscore, arsinh and minmax
 }

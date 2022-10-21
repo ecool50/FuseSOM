@@ -2,9 +2,7 @@
 % Please edit documentation in R/CoreFunctions.R
 \name{estimateNumCluster}
 \alias{estimateNumCluster}
-\title{A function for estimating the number of clusters using various method
-Methods available are: Discriminant, Distance
-(Gap, Silhouette, Slope, Jump, and Within Cluster Distance,) and Instability}
+\title{Estimate number of clusters}
 \usage{
 estimateNumCluster(data, method = c("Discriminant", "Distance"), kSeq = 2:20)
 }
@@ -33,7 +31,7 @@ Methods available are: Discriminant, Distance
 \examples{
 data("risom_dat")
 risomMarkers <- c(
- "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 )
 res <- runFuseSOM(risom_dat, markers = risomMarkers, numClusters = 23)
 res.est.k <- estimateNumCluster(res$model, kSeq = 2:25)

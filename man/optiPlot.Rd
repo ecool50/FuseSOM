@@ -2,10 +2,7 @@
 % Please edit documentation in R/CoreFunctions.R
 \name{optiPlot}
 \alias{optiPlot}
-\title{A function generating the elbow plot for the optimal number of clusters
-returned by the estimateNumcluster() function
-Methods available are:
-Gap, Silhouette, Slope, Jump, and Within Cluster Distance(WCD)}
+\title{Generate elbow plots}
 \usage{
 optiPlot(data, method = "jump")
 }
@@ -27,7 +24,7 @@ Gap, Silhouette, Slope, Jump, and Within Cluster Distance(WCD)
 \examples{
 data("risom_dat")
 risomMarkers <- c(
- "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
+  "CD45", "SMA", "CK7", "CK5", "VIM", "CD31", "PanKRT", "ECAD"
 )
 res <- runFuseSOM(risom_dat, markers = risomMarkers, numClusters = 23)
 resEstK <- estimateNumCluster(res$model, kSeq = 2:25)
