@@ -211,9 +211,11 @@ clusterPrototypes <- function(somModel, numClusters = NULL) {
   pear <- cor(t(prototypes), method = "pearson")
   cosi <- tcosine(prototypes)
   spear <- cor(t(prototypes), method = "spearman")
+  eucl <- dist(prototypes)
 
   # peform multiview integration
-  finalDist <- as.matrix(fuse(cor2dist(pear), cor2dist(cosi), cor2dist(spear)))
+  finalDist <- as.matrix(fuse(cor2dist(pear), cor2dist(cosi), cor2dist(spear)),
+                         eucl)
 
   # cluster the final
   clusters <- HierarchicalClustering(finalDist,
