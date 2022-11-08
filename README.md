@@ -1,7 +1,8 @@
 FuseSOM
 ======================================================
 
-<img src=inst/FuseSOM.png height="200">
+<img src=inst/FuseSOM.png align="right" height="200">
+
 
 A correlation based `Multiview` Self Organizing Map for the characterization of 
 cell types in `highly multiplexed in situ imaging cytometry assays`.
