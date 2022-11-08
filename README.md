@@ -17,8 +17,26 @@ We also provide functions for normalisation and estimation of the number of clus
 Installation
 --------
 
+Install the Bioconductor release version.
+
 ```r
-# Install the development version from GitHub:
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("FuseSOM")
+```
+Otherwise, if you would like the most up-to-date features, install the development version.
+
+```r
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# The following initializes usage of Bioc devel
+BiocManager::install(version='devel')
+
+BiocManager::install("FuseSOM")
+
+# Or install the development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("https://github.com/ecool50/FuseSOM")
 library(FuseSOM)
