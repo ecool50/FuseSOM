@@ -1,7 +1,7 @@
 FuseSOM
 ======================================================
 
-<img src=inst/FuseSOM.png align="right" height="200">
+<img src=https://raw.githubusercontent.com/ecool50/FuseSOM/main/inst/FuseSOM.png align="right" height="200">
 
 
 A correlation based `Multiview` Self Organizing Map for the characterization of 
