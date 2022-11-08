@@ -3,3 +3,4 @@
 ^LICENSE\.md$
 ^\.git$
 ^FuseSOM\.BiocCheck$
+^\.vscode$

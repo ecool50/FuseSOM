@@ -9,3 +9,6 @@ inst/doc
 *.Rcheck
 FuseSOM*.tar.gz
 *.BiocCheck
+
+# vscode settings
+.vscode
