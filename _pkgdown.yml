@@ -5,4 +5,10 @@ toc:
   depth: 3
 navbar:
   title: ~
+  structure:
+    left: [intro, reference]
+  components:
+    intro:
+      text: Getting started
+      href: articles/Introduction.html
   bg: dark
