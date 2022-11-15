@@ -42,4 +42,4 @@ VignetteBuilder: knitr
 BugReports: https://github.com/ecool50/FuseSOM/issues
 LinkingTo: Rcpp
 biocViews: 
-    SingleCell, CellBasedAssays, Clustering
+    SingleCell, CellBasedAssays, Clustering, Spatial
