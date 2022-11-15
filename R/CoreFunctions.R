@@ -334,20 +334,35 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
       )
       # check to see if the same markers were used to generate the previous SOM
       oldSom <- metadata(data)$SOM
-      oldMarkers <- colnames(oldSom$prototypes)
+      oldMarkers <- colnames(oldSom$data)
 
       # if no markers were provided
       if (is.null(markers)) {
         if (identical(oldMarkers, colnames(dataNew))) {
           message(
             "The same markers were used to generate the prototypes. ",
-            "Will proceed to clustering the prototypes"
+            "Checking to see if the same data was used"
           )
-          clusters <- clusterPrototypes(oldSom, numClusters = numClusters)
-          colData(data)$clusters <- clusters
-          # update the cluster name
-          names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
-          return(data)
+          dataOld <- metadata(data)$SOM$data
+          if(all.equal(dataNew, dataOld)){
+            message(
+              "The same markers and data was used to generate the prototypes. ",
+              "Will proceed to clustering the prototypes"
+            )
+            clusters <- clusterPrototypes(oldSom, numClusters = numClusters)
+            colData(data)$clusters <- clusters
+            # update the cluster name
+            names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
+            return(data)
+            
+          } else{
+            message(
+              "Same markers but a different data was used to generate th prototypes. ",
+              "Will regenerate the SOM and then cluster prototypes"
+            )
+            
+          }
+          
         } else {
           message(
             "Different markers were used to generate the prototypes. ",
@@ -360,13 +375,28 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
         if (identical(oldMarkers, markers)) {
           message(
             "The same markers were used to generate the prototypes. ",
-            "Will proceed to clustering the prototypes"
+            "Checking to see if the same data was used"
           )
-          clusters <- clusterPrototypes(oldSom, numClusters = numClusters)
-          colData(data)$clusters <- clusters
-          # update the cluster name
-          names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
-          return(data)
+          dataOld <- metadata(data)$SOM$data
+          if(all.equal(dataNew, dataOld)){
+            message(
+              "The same markers and data was used to generate the prototypes. ",
+              "Will proceed to clustering the prototypes"
+            )
+            clusters <- clusterPrototypes(oldSom, numClusters = numClusters)
+            colData(data)$clusters <- clusters
+            # update the cluster name
+            names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
+            return(data)
+            
+          } else{
+            message(
+              "Same markers but a different data was used to generate th prototypes. ",
+              "Will regenerate the SOM and then cluster prototypes"
+            )
+            
+          }
+          
         } else {
           message(
             "Different markers were used to generate the prototypes. ",
@@ -394,7 +424,8 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
     colData(data)$clusters <- clusters
     # update the cluster name
     names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
-    metadata(data) <- append(metadata(data), list(SOM = somModel))
+    # overwrite the previous SOM if it is there
+    metadata(data)$SOM <- somModel
     return(data)
   } else {
     return(list(model = somModel, clusters = clusters))
