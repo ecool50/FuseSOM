@@ -343,8 +343,8 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
             "The same markers were used to generate the prototypes. ",
             "Checking to see if the same data was used"
           )
-          dataOld <- metadata(data)$SOM$data
-          if(all.equal(dataNew, dataOld)){
+          dataOld <- oldSom$data
+          if(identical(dataNew, dataOld)){
             message(
               "The same markers and data was used to generate the prototypes. ",
               "Will proceed to clustering the prototypes"
@@ -377,8 +377,8 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
             "The same markers were used to generate the prototypes. ",
             "Checking to see if the same data was used"
           )
-          dataOld <- metadata(data)$SOM$data
-          if(all.equal(dataNew, dataOld)){
+          dataOld <- oldSom$data
+          if(identical(dataNew, dataOld)){
             message(
               "The same markers and data was used to generate the prototypes. ",
               "Will proceed to clustering the prototypes"
@@ -425,6 +425,7 @@ runFuseSOM <- function(data, markers = NULL, numClusters = NULL, assay = NULL,
     # update the cluster name
     names(colData(data))[names(colData(data)) == "clusters"] <- clusterCol
     # overwrite the previous SOM if it is there
+    metadata(data)$SOM <- NULL
     metadata(data)$SOM <- somModel
     return(data)
   } else {
