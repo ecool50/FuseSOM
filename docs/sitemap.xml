@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/articles/Introduction.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/articles/Introduction.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/articles/index.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/index.html</loc>
   </url>
   <url>
-    <loc>/reference/FuseSOM.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/FuseSOM.html</loc>
   </url>
   <url>
-    <loc>/reference/clusterPrototypes.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/clusterPrototypes.html</loc>
   </url>
   <url>
-    <loc>/reference/computeGridSize.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/computeGridSize.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-arsinhNnorm.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/dot-arsinhNnorm.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-computeElbow.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/dot-computeElbow.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-minmaxNorm.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/dot-minmaxNorm.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-percentileNorm.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/dot-percentileNorm.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-runDiscriminant.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/dot-runDiscriminant.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-uniformData.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/dot-uniformData.html</loc>
   </url>
   <url>
-    <loc>/reference/estimateNumCluster.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/estimateNumCluster.html</loc>
   </url>
   <url>
-    <loc>/reference/generatePrototypes.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/generatePrototypes.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/markerHeatmap.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/markerHeatmap.html</loc>
   </url>
   <url>
-    <loc>/reference/normaliseData.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/normaliseData.html</loc>
   </url>
   <url>
-    <loc>/reference/normalizeData.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/normalizeData.html</loc>
   </url>
   <url>
-    <loc>/reference/optiPlot.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/optiPlot.html</loc>
   </url>
   <url>
-    <loc>/reference/risom_dat.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/risom_dat.html</loc>
   </url>
   <url>
-    <loc>/reference/runFuseSOM.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/runFuseSOM.html</loc>
   </url>
   <url>
-    <loc>/reference/somInitPca.default.html</loc>
+    <loc>https://ecool50.github.io/FuseSOM/reference/somInitPca.default.html</loc>
   </url>
 </urlset>

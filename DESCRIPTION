@@ -41,6 +41,7 @@ Suggests:
     SingleCellExperiment
 VignetteBuilder: knitr
 BugReports: https://github.com/ecool50/FuseSOM/issues
+URL: https://ecool50.github.io/FuseSOM/ https://github.com/SydneyBioX/FuseSOM
 LinkingTo: Rcpp
 biocViews: 
     SingleCell, CellBasedAssays, Clustering, Spatial
