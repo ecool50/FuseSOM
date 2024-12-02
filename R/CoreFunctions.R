@@ -214,8 +214,7 @@ clusterPrototypes <- function(somModel, numClusters = NULL) {
   eucl <- dist(prototypes)
 
   # peform multiview integration
-  finalDist <- as.matrix(fuse(cor2dist(pear), cor2dist(cosi), cor2dist(spear)),
-                         eucl)
+  finalDist <- as.matrix(fuse(cor2dist(pear), cor2dist(cosi), cor2dist(spear), eucl))
 
   # cluster the final
   clusters <- HierarchicalClustering(finalDist,
