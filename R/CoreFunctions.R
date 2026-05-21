@@ -501,10 +501,11 @@ estimateNumCluster <- function(data,
     pear <- cor(t(prototypes), method = "pearson")
     cosi <- tcosine(prototypes)
     spear <- cor(t(prototypes), method = "spearman")
+    eucl <- dist(prototypes)
 
     # Get the multiview integration
     finalDist <- as.matrix(
-      fuse(cor2dist(pear), cor2dist(cosi), cor2dist(spear))
+      fuse(cor2dist(pear), cor2dist(cosi), cor2dist(spear), eucl)
     )
 
     # estimate the number of clusters uisng discriminant analysis

@@ -9,8 +9,9 @@
   pear <- stats::cor(t(data), method = "pearson")
   cosi <- coop::tcosine(data)
   spear <- stats::cor(t(data), method = "spearman")
+  eucl <- stats::dist(data)
 
-  dMat <- as.matrix(fuse(cor2dist(pear), cor2dist(cosi), cor2dist(spear)))
+  dMat <- as.matrix(fuse(cor2dist(pear), cor2dist(cosi), cor2dist(spear), eucl))
 
   hcObj <- fastcluster::hclust(stats::as.dist(dMat), method = linkage)
   cl <- stats::cutree(hcObj, k)
